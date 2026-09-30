@@ -1,0 +1,50 @@
+{
+  "name": "不详火炬内容附加",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:goety_invasion/summons/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "新的刌民已现。新的仆从已归。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "与不详火炬更多的相关内容请点击$(l:goety:crafts/artifice/ominous_pyre)此处$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "掳掠者仆从",
+      "text": "需求： $(li)新刌民 $(li)2个干草块或标靶 $(li)32个木板 $(li)16个木栅栏 $(li)2个雕刻过的南瓜 $(li)1个工作台 $(li)1个熔炉"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "炼金术士仆从",
+      "text": "需求： $(li)新刌民 $(li)2个干草块或标靶 $(li)16个木板 $(li)16个木栅栏 $(li)2个雕刻过的南瓜 $(li)2个制箭台 $(li)2个酿造台 $(li)1个女巫之杖"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "挑衅者仆从",
+      "text": "需求： $(li)必须是有魔法资质的新刌民 $(li)2个干草块或标靶 $(li)8个书架/附魔能力与前者等同的方块 $(li)16个木栅栏 $(li)2个雕刻过的南瓜 $(li)10个羊毛 $(li)2面旗帜"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "猛击者仆从",
+      "text": "需求： $(li)卫道士仆从 $(li)1个锻造台 $(li)1个熔炉 $(li)1个工作台 $(li)1个高炉 $(li)3个木栅栏 $(li)3个雕刻过的南瓜 $(li)1面旗帜 $(li)32个任意种类的砖块 $(li)20个任意种类的墙"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "裁决者仆从",
+      "text": "需求： $(li)猛击者仆从 $(li)1个铁砧 $(li)1个锻造台 $(li)2个高炉 $(li)3个木栅栏 $(li)3个雕刻过的南瓜 $(li)2面旗帜 $(li)102个任意种类的砖块 $(li)72个任意种类的墙 $(li)15个沙子 $(li)6个岩浆块 $(li)10个仙人掌 $(li)16个苍白金属块 $(li)21个锁链"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "不详术士仆从",
+      "text": "需求： $(li)必须是有魔法资质的新刌民 $(li)32个任意种类的砖块 $(li)2个火焰 $(li)8个紫水晶块 $(li)16个书架/附魔能力与前者等同的方块 $(li)10个羊毛"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "唤火者仆从",
+      "text": "需求： $(li)必须是有魔法资质的新刌民 $(li)8个岩浆块 $(li)9个甘蔗 $(li)2个金块 $(li)4个地毯 $(li)4个枯萎的灌木 $(li)32个红沙 $(li)8个干草块"
+    }
+  ]
+}
