@@ -1,0 +1,7 @@
+{
+  "name": "Focus",
+  "description": "New Illagers? New Spell!",
+  "icon": "goety_invasion:magical_flames_focus",
+  "parent": "goety:goety_invasion",
+  "sortnum": 2
+}
