@@ -1,0 +1,82 @@
+package com.tenken_amainu.goety_invasion.spells;
+
+import com.Polarice3.Goety.common.magic.Spell;
+import com.Polarice3.Goety.common.magic.SpellStat;
+import com.tenken_amainu.goety_invasion.config.GINSpellConfig;
+import com.tenken_amainu.goety_invasion.util.SetMagicFireUtil;
+import fuzs.illagerinvasion.init.ModRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+
+public class MagicalFlamesSpell extends Spell {
+
+    @Override
+    public SpellStat defaultStats() {
+        return super.defaultStats().setRange(GINSpellConfig.MagicalFlamesRange.get());
+    }
+
+    @Override public int defaultSoulCost() { return GINSpellConfig.MagicalFlamesCost.get(); }
+    @Override public int defaultCastDuration() { return GINSpellConfig.MagicalFlamesDuration.get(); }
+    @Override public SoundEvent CastingSound() { return ModRegistry.SORCERER_CAST_SOUND_EVENT.get(); }
+    @Override public int defaultSpellCooldown() { return GINSpellConfig.MagicalFlamesCoolDown.get(); }
+    @Override public List<Enchantment> acceptedEnchantments() { return List.of(); }
+
+    @Override
+    public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+        float range = spellStat.getRange();
+
+        LivingEntity target = null;
+        double closestDistance = Double.MAX_VALUE;
+        for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class, caster.getBoundingBox().inflate(range))) {
+            if (entity == caster || !entity.isAlive() || entity.isAlliedTo(caster)) continue;
+            if (!caster.hasLineOfSight(entity)) continue;
+
+            double distance = caster.distanceToSqr(entity);
+            if (distance < closestDistance) {
+                target = entity;
+                closestDistance = distance;
+            }
+        }
+
+        BlockPos centerPos;
+        if (target != null) {
+            centerPos = target.blockPosition();
+        } else {
+            Vec3 spawnPos = caster.getEyePosition().add(caster.getLookAngle().scale(3.0));
+            centerPos = BlockPos.containing(spawnPos);
+        }
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                SetMagicFireUtil.trySetFireAt(centerPos.offset(dx, 0, dz), worldIn, caster);
+            }
+        }
+
+        if (target != null) {
+            target.hurt(worldIn.damageSources().magic(),
+                    GINSpellConfig.MagicalFlamesDirectDamage.get().floatValue());
+            worldIn.sendParticles(ModRegistry.MAGIC_FLAME_PARTICLE_TYPE.get(),
+                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+                    30, 0.3D, 0.5D, 0.3D, 0.08D);
+        } else {
+            float damage = GINSpellConfig.MagicalFlamesAreaDamage.get().floatValue();
+            AABB area = new AABB(centerPos).inflate(1.5);
+            for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class, area,
+                    e -> e != caster && e.isAlive() && !e.isAlliedTo(caster))) {
+                entity.hurt(worldIn.damageSources().magic(), damage);
+            }
+        }
+
+        worldIn.playSound(null, caster.getX(), caster.getY(), caster.getZ(),
+                ModRegistry.SORCERER_COMPLETE_CAST_SOUND_EVENT.get(),
+                caster.getSoundSource(), 1.0F, 1.0F);
+    }
+}
