@@ -1,0 +1,20 @@
+{
+  "name": "Necrotic Dust",
+  "icon": "goety_invasion:necrotic_dust",
+  "category": "goety:goety_invasion/focus/world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It appears that some Illager mages have also learned a thing or two about forbidden texts and the control of the dead. It seems you are not the only one seeking to claim such knowledge—aside from those mindless undead necromancers who have long since lost their former wisdom..."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety_invasion:necrotic_dust",
+      "text": "The dust left behind by Illager Necromancers contains the essence of death itself, and can be used for a variety of dark purposes."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "illagerinvasion:necromancer"
+    }
+  ]
+}
