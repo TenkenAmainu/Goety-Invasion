@@ -1,0 +1,73 @@
+package com.tenken_amainu.goety_invasion.common.effect;
+
+import com.tenken_amainu.goety_invasion.config.GINSpellConfig;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class NecromancerShieldEffect extends MobEffect {
+
+    public NecromancerShieldEffect() {
+        super(MobEffectCategory.BENEFICIAL, 0x8B0000);
+    }
+
+    @Override
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if (entity.level().isClientSide || !(entity instanceof Player player)) return;
+
+        LivingEntity playerTarget = player.getLastHurtMob();
+        if (playerTarget != null && !playerTarget.isAlive()) {
+            playerTarget = null;
+        }
+
+        Set<String> blacklist = parseBlacklist(GINSpellConfig.NecromancerShieldBlacklist.get());
+        final LivingEntity finalTarget = playerTarget;
+
+        List<Mob> undeadMobs = entity.level().getEntitiesOfClass(
+                Mob.class,
+                entity.getBoundingBox().inflate(10.0),
+                e -> e.getMobType() == MobType.UNDEAD
+                        && e.isAlive()
+                        && !e.isAlliedTo(player)
+                        && !isBlacklisted(e, blacklist)
+        );
+
+        for (Mob undead : undeadMobs) {
+            if (playerTarget != null) {
+                undead.setTarget(playerTarget);
+            }
+            undead.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10, 0, false, false));
+            undead.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10, 0, false, false));
+            undead.clearFire();
+        }
+    }
+
+    private Set<String> parseBlacklist(String raw) {
+        if (raw == null || raw.isBlank()) return Set.of();
+        return java.util.Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toSet());
+    }
+
+    private boolean isBlacklisted(Mob mob, Set<String> blacklist) {
+        ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
+        return id != null && blacklist.contains(id.toString());
+    }
+
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return true;
+    }
+}
