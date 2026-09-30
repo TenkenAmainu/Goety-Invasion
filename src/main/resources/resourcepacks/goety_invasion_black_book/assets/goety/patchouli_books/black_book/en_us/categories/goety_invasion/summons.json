@@ -1,0 +1,7 @@
+{
+  "name": "Servants",
+  "description": "Illager army expansion plan",
+  "icon": "illagerinvasion:platinum_infused_hatchet",
+  "parent": "goety:goety_invasion",
+  "sortnum": 3
+}
