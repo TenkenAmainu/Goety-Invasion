@@ -1,0 +1,68 @@
+package com.tenken_amainu.goety_invasion.common.block;
+
+import com.Polarice3.Goety.api.entities.IOwned;
+import com.tenken_amainu.goety_invasion.common.blockentity.AllyMagicFireBlockEntity;
+import fuzs.illagerinvasion.world.level.block.MagicFireBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
+
+public class AllyMagicFireBlock extends MagicFireBlock implements EntityBlock {
+
+    public AllyMagicFireBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+    }
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    }
+
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (level.isClientSide) return;
+        if (entity instanceof ItemEntity) return;
+        if (!(entity instanceof LivingEntity living) || living.hurtTime != 0) return;
+        if (!(level.getBlockEntity(pos) instanceof AllyMagicFireBlockEntity fireBE)) return;
+
+        UUID ownerUUID = fireBE.getOwner();
+        if (ownerUUID == null) return;
+        if (shouldIgnore(level, entity, ownerUUID)) return;
+
+        living.hurt(level.damageSources().inFire(), 1.0F);
+    }
+
+    private boolean shouldIgnore(Level level, Entity entity, UUID ownerUUID) {
+        if (entity.getUUID().equals(ownerUUID)) return true;
+
+        if (level instanceof ServerLevel serverLevel
+                && serverLevel.getEntity(ownerUUID) instanceof LivingEntity owner) {
+            if (owner.isAlliedTo(entity)) return true;
+            if (entity instanceof IOwned owned && ownerUUID.equals(owned.getOwnerId())) return true;
+        }
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new AllyMagicFireBlockEntity(pos, state);
+    }
+}
