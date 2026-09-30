@@ -1,0 +1,20 @@
+{
+  "name": "死术之尘",
+  "icon": "goety_invasion:necrotic_dust",
+  "category": "goety:goety_invasion/focus/world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "看起来部分灾厄村民法师同样了解了一些有关禁书和控制亡灵的秘密。看来除了那些早已失去了曾经智慧的不死死灵法师以外，你不是唯一想要窃取这些知识的人..."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety_invasion:necrotic_dust",
+      "text": "刌民死灵法师留下的粉末包含着死亡的精华，可以用于多种黑暗的用途。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "illagerinvasion:necromancer"
+    }
+  ]
+}
