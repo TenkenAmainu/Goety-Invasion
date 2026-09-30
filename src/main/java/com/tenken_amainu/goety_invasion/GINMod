@@ -1,0 +1,343 @@
+package com.tenken_amainu.goety_invasion;
+
+import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
+import com.Polarice3.Goety.common.blocks.ModBlocks;
+import com.Polarice3.Goety.common.entities.neutral.Minion;
+import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.magic.MagicFocus;
+import com.mojang.logging.LogUtils;
+import com.tenken_amainu.goety_invasion.common.block.AllyMagicFireBlock;
+import com.tenken_amainu.goety_invasion.common.blockentity.AllyMagicFireBlockEntity;
+import com.tenken_amainu.goety_invasion.common.effect.NecromancerShieldEffect;
+import com.tenken_amainu.goety_invasion.common.entities.ally.illager.*;
+import com.tenken_amainu.goety_invasion.common.entities.ally.illager.train.GINIllagerType;
+import com.tenken_amainu.goety_invasion.common.entities.ally.undead.AllySurrendered;
+import com.tenken_amainu.goety_invasion.common.entities.ally.undead.bound.BoundFireCaller;
+import com.tenken_amainu.goety_invasion.common.entities.ally.undead.bound.BoundInvoker;
+import com.tenken_amainu.goety_invasion.common.entities.ally.undead.bound.BoundSorcerer;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllyFlyingMagma;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllyNecroSkullBolt;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllySkullBolt;
+import com.tenken_amainu.goety_invasion.common.item.NecroticDust;
+import com.tenken_amainu.goety_invasion.config.GINServantConfig;
+import com.tenken_amainu.goety_invasion.config.GINSpellConfig;
+import com.tenken_amainu.goety_invasion.spells.MagicalFlamesSpell;
+import com.tenken_amainu.goety_invasion.spells.geo.FlyingMagmaSpell;
+import com.tenken_amainu.goety_invasion.spells.ill.InvokerFangsSpell;
+import com.tenken_amainu.goety_invasion.spells.ill.SurrenderedSpell;
+import com.tenken_amainu.goety_invasion.spells.necromancy.ConjureSkullSpell;
+import com.tenken_amainu.goety_invasion.spells.necromancy.IllNecromancerShieldSpell;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import org.slf4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.Polarice3.Goety.common.items.ServantSpawnEggs.egg;
+
+@Mod(GINMod.MODID)
+public class GINMod {
+    public static final String MODID = "goety_invasion";
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
+    public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
+    public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, GINMod.MODID);
+    public static final Map<ResourceLocation, ModBlocks.BlockLootSetting> BLOCK_LOOT = new HashMap<>();
+    public static DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GINMod.MODID);
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MODID);
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, GINMod.MODID);
+    public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
+
+    public static ResourceLocation location(String path) {
+        return new ResourceLocation(MODID, path);
+    }
+
+    public static final RegistryObject<Block> ALLY_MAGIC_FIRE = BLOCKS.register("ally_magic_fire",
+            () -> new AllyMagicFireBlock(BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 15)
+                    .noOcclusion()
+                    .sound(SoundType.WOOL)));
+
+    public static final RegistryObject<BlockEntityType<AllyMagicFireBlockEntity>> ALLY_MAGIC_FIRE_BLOCKENTITY = BLOCK_ENTITY.register("ally_magic_fire",
+            () -> BlockEntityType.Builder.of(AllyMagicFireBlockEntity::new, ALLY_MAGIC_FIRE.get()).build(null));
+
+    public static final RegistryObject<Item> LOGO_ITEM = ITEMS.register("logo", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> ILL_NECRO_SOUL_JAR = ITEMS.register("ill_necro_soul_jar",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> NECROTICDUST = ITEMS.register("necrotic_dust", () -> new NecroticDust(new Item.Properties()));
+
+    public static final RegistryObject<Item> MAGICALFLAMES_FOCUS = ITEMS.register("magical_flames_focus", () -> new MagicFocus(new MagicalFlamesSpell()));
+    public static final RegistryObject<Item> CONJUREFANGS_FOCUS = ITEMS.register("invoker_fangs_focus", () -> new MagicFocus(new InvokerFangsSpell()));
+    public static final RegistryObject<Item> SURRENDERED_FOCUS = ITEMS.register("surrendered_focus", () -> new MagicFocus(new SurrenderedSpell()));
+    public static final RegistryObject<Item> CONJURESKELL_FOCUS = ITEMS.register("ill_necro_skull_focus", () -> new MagicFocus(new ConjureSkullSpell()));
+    public static final RegistryObject<Item> ILLNECROMANCERSHIELD_FOCUS = ITEMS.register("ill_necromancer_shield_focus", () -> new MagicFocus(new IllNecromancerShieldSpell()));
+    public static final RegistryObject<Item> FIRECALL_FOCUS = ITEMS.register("fire_call_focus", () -> new MagicFocus(new FlyingMagmaSpell()));
+
+    public static final RegistryObject<EntityType<MarauderServant>> MARAUDER_SERVANT = ENTITY_TYPES.register(
+            "marauder_servant",
+            () -> EntityType.Builder.of(MarauderServant::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("marauder_servant").toString()));
+
+    public static final RegistryObject<EntityType<AllySurrendered>> ALLY_SURRENDERED = ENTITY_TYPES.register(
+            "ally_surrendered",
+            () -> EntityType.Builder.of(AllySurrendered::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.99F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("ally_surrendered").toString()));
+
+    public static final RegistryObject<EntityType<InquisitorServant>> INQUISITOR_SERVANT = ENTITY_TYPES.register(
+            "inquisitor_servant",
+            () -> EntityType.Builder.of(InquisitorServant::new, MobCategory.CREATURE)
+                    .sized(0.6F, 2.25F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("inquisitor_servant").toString()));
+
+    public static final RegistryObject<EntityType<ProvokerServant>> PROVOKER_SERVANT = ENTITY_TYPES.register(
+            "provoker_servant",
+            () -> EntityType.Builder.of(ProvokerServant::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("provoker_servant").toString()));
+
+    public static final RegistryObject<EntityType<BasherServant>> BASHER_SERVANT = ENTITY_TYPES.register(
+            "basher_servant",
+            () -> EntityType.Builder.of(BasherServant::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("basher_servant").toString()));
+
+    public static final RegistryObject<EntityType<BoundInvoker>> BOUND_INVOKER = ENTITY_TYPES.register(
+            "bound_invoker",
+            () -> EntityType.Builder.of(BoundInvoker::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F).clientTrackingRange(10).updateInterval(3)
+                    .build(location("bound_invoker").toString()));
+
+    public static final RegistryObject<EntityType<AlchemistServant>> ALCHEMIST_SERVANT =
+            ENTITY_TYPES.register("alchemist_servant",
+                    () -> EntityType.Builder.<AlchemistServant>of(AlchemistServant::new, MobCategory.CREATURE)
+                            .sized(0.6f, 1.95f)
+                            .build(location("alchemist_servant").toString()));
+
+    public static final RegistryObject<EntityType<AllySkullBolt>> ALLY_SKULL_BOLT =
+            ENTITY_TYPES.register("ally_skull_bolt",
+                    () -> EntityType.Builder.<AllySkullBolt>of(AllySkullBolt::new, MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .setTrackingRange(64)
+                            .setUpdateInterval(1)
+                            .build("ally_skull_bolt"));
+
+    public static final RegistryObject<EntityType<SorcererServant>> SORCERER_SERVANT =
+            ENTITY_TYPES.register("sorcerer_servant",
+                    () -> EntityType.Builder.of(SorcererServant::new, MobCategory.CREATURE)
+                            .sized(0.5F, 1.92F)
+                            .build(new ResourceLocation(GINMod.MODID, "sorcerer_servant").toString()));
+
+    public static final RegistryObject<EntityType<AllyNecroSkullBolt>> ALLY_NECRO_SKULL_BOLT_ENTITY_TYPE =
+            ENTITY_TYPES.register("ally_necro_skull_bolt",
+                    () -> EntityType.Builder.<AllyNecroSkullBolt>of(AllyNecroSkullBolt::new, MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .clientTrackingRange(64)
+                            .updateInterval(1)
+                            .build("ally_necro_skull_bolt"));
+
+    public static final RegistryObject<EntityType<NecromancerServant>> NECROMANCER_SERVANT =
+            ENTITY_TYPES.register("necromancer_servant",
+                    () -> EntityType.Builder.<NecromancerServant>of(NecromancerServant::new, MobCategory.CREATURE)
+                            .sized(0.6F, 1.95F)
+                            .clientTrackingRange(8)
+                            .build("necromancer_servant"));
+
+    public static final RegistryObject<EntityType<AllyFlyingMagma>> ALLY_FLYING_MAGMA =
+            ENTITY_TYPES.register("ally_flying_magma",
+                    () -> EntityType.Builder.<AllyFlyingMagma>of(AllyFlyingMagma::new, MobCategory.MISC)
+                            .sized(0.95F, 1.05F)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build("ally_flying_magma"));
+
+    public static final RegistryObject<EntityType<FireCallerServant>> FIRECALLER_SERVANT =
+            ENTITY_TYPES.register("firecaller_servant",
+                    () -> EntityType.Builder.<FireCallerServant>of(FireCallerServant::new, MobCategory.CREATURE)
+                            .sized(0.5f, 1.92f)
+                            .fireImmune()
+                            .build("firecaller_servant"));
+
+    public static final RegistryObject<EntityType<BoundFireCaller>> BOUND_FIRECALLER =
+            ENTITY_TYPES.register("bound_firecaller",
+                    () -> EntityType.Builder.<BoundFireCaller>of(BoundFireCaller::new, MobCategory.CREATURE)
+                            .sized(0.5F, 1.92F)
+                            .fireImmune()
+                            .build("bound_firecaller"));
+
+    public static final RegistryObject<EntityType<BoundSorcerer>> BOUND_SORCERER =
+            ENTITY_TYPES.register("bound_sorcerer",
+                    () -> EntityType.Builder.<BoundSorcerer>of(BoundSorcerer::new, MobCategory.CREATURE)
+                            .sized(0.5F, 1.92F)
+                            .fireImmune()
+                            .build("bound_sorcerer"));
+
+    public static final RegistryObject<MobEffect> NECROMANCER_SHIELD =
+            MOB_EFFECTS.register("necromancer_shield", NecromancerShieldEffect::new);
+
+    public static final RegistryObject<ServantSpawnEggItem> MARAUDER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "marauder_servant_spawn_egg", () -> new ServantSpawnEggItem(MARAUDER_SERVANT, 9541270, 5441030, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> ALLY_SURRENDERED_SPAWN_EGG = ITEMS.register(
+            "ally_surrendered_spawn_egg", () -> new ServantSpawnEggItem(ALLY_SURRENDERED, 11260369, 11858160, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> INQUISITOR_SERVANT_SPAWN_EGG = ITEMS.register(
+            "inquisitor_servant_spawn_egg", () -> new ServantSpawnEggItem(INQUISITOR_SERVANT, 9541270, 4934471, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> PROVOKER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "provoker_servant_spawn_egg", () -> new ServantSpawnEggItem(PROVOKER_SERVANT, 9541270, 9399876, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> BASHER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "basher_servant_spawn_egg", () -> new ServantSpawnEggItem(BASHER_SERVANT, 9541270, 5985087, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> BOUND_INVOKER_SPAWN_EGG = ITEMS.register(
+            "bound_invoker_spawn_egg", () -> new ServantSpawnEggItem(BOUND_INVOKER, 9541270, 0xCEC987, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> ALCHEMIST_SERVANT_SPAWN_EGG = ITEMS.register(
+            "alchemist_servant_spawn_egg", () -> new ServantSpawnEggItem(ALCHEMIST_SERVANT, 9541270, 7550099, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> SORCERER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "sorcerer_servant_spawn_egg", () -> new ServantSpawnEggItem(SORCERER_SERVANT, 9541270, 10899592, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "necromancer_servant_spawn_egg", () -> new ServantSpawnEggItem(NECROMANCER_SERVANT, 0x808080, 0x8B0000, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> BOUND_FIRECALLER_SPAWN_EGG = ITEMS.register(
+            "bound_firecaller_spawn_egg",
+            () -> new ServantSpawnEggItem(BOUND_FIRECALLER, 9541270, 14185780, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> BOUND_SORCERER_SPAWN_EGG = ITEMS.register(
+            "bound_sorcerer_spawn_egg",
+            () -> new ServantSpawnEggItem(BOUND_SORCERER, 9541270, 10899572, egg()));
+    public static final RegistryObject<ServantSpawnEggItem> FIRECALLER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "firecaller_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(FIRECALLER_SERVANT, 9541270, 14185784, egg()));
+
+    public static final RegistryObject<CreativeModeTab> GIN_TAB = TABS.register("goety_invasion",
+            () -> CreativeModeTab.builder()
+                    .title(Component.literal("Goety & Illager Invasion"))
+                    .icon(() -> LOGO_ITEM.get().getDefaultInstance())
+                    .displayItems((params, output) -> {
+                        output.accept(ILL_NECRO_SOUL_JAR.get());
+                        output.accept(NECROTICDUST.get());
+                        output.accept(FIRECALL_FOCUS.get());
+                        output.accept(CONJURESKELL_FOCUS.get());
+                        output.accept(ILLNECROMANCERSHIELD_FOCUS.get());
+                        output.accept(MAGICALFLAMES_FOCUS.get());
+                        output.accept(CONJUREFANGS_FOCUS.get());
+                        output.accept(SURRENDERED_FOCUS.get());
+
+                        output.accept(ALLY_SURRENDERED_SPAWN_EGG.get());
+                        output.accept(BOUND_SORCERER_SPAWN_EGG.get());
+                        output.accept(BOUND_FIRECALLER_SPAWN_EGG.get());
+                        output.accept(BOUND_INVOKER_SPAWN_EGG.get());
+                        output.accept(FIRECALLER_SERVANT_SPAWN_EGG.get());
+                        output.accept(MARAUDER_SERVANT_SPAWN_EGG.get());
+                        output.accept(INQUISITOR_SERVANT_SPAWN_EGG.get());
+                        output.accept(PROVOKER_SERVANT_SPAWN_EGG.get());
+                        output.accept(BASHER_SERVANT_SPAWN_EGG.get());
+                        output.accept(ALCHEMIST_SERVANT_SPAWN_EGG.get());
+                        output.accept(SORCERER_SERVANT_SPAWN_EGG.get());
+                        output.accept(NECROMANCER_SERVANT_SPAWN_EGG.get());
+                    })
+                    .build());
+
+    public GINMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ENTITY_TYPES.register(modEventBus);
+        ITEMS.register(modEventBus);
+        TABS.register(modEventBus);
+        MENU_TYPES.register(modEventBus);
+        MOB_EFFECTS.register(modEventBus);
+        BLOCKS.register(modEventBus);
+        BLOCK_ENTITY.register(modEventBus);
+        PARTICLE_TYPES.register(modEventBus);
+        SOUND_EVENTS.register(modEventBus);
+
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerAttributes);
+        modEventBus.addListener(this::addPackFinders);
+        MinecraftForge.EVENT_BUS.register(this);
+
+        ModLoadingContext.get().registerConfig(
+                ModConfig.Type.COMMON, GINSpellConfig.SPEC, "goety_invasion-spells.toml");
+        ModLoadingContext.get().registerConfig(
+                ModConfig.Type.COMMON, GINServantConfig.SPEC, "goety_invasion-servants.toml");
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            IllagerType.create("MARAUDER", new GINIllagerType());
+            IllagerType.create("INQUISITOR", new GINIllagerType());
+            IllagerType.create("BASHER", new GINIllagerType());
+            IllagerType.create("PROVOKER", new GINIllagerType());
+            IllagerType.create("SORCERER", new GINIllagerType());
+            IllagerType.create("ALCHEMIST", new GINIllagerType());
+            IllagerType.create("FIRECALLER", new GINIllagerType());
+        });
+    }
+
+    private void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(MARAUDER_SERVANT.get(), MarauderServant.createAttributes().build());
+        event.put(ALLY_SURRENDERED.get(), Minion.createMobAttributes().build());
+        event.put(INQUISITOR_SERVANT.get(), InquisitorServant.setCustomAttributes().build());
+        event.put(PROVOKER_SERVANT.get(), ProvokerServant.setCustomAttributes().build());
+        event.put(BASHER_SERVANT.get(), BasherServant.setCustomAttributes().build());
+        event.put(BOUND_INVOKER.get(), BoundInvoker.setCustomAttributes().build());
+        event.put(ALCHEMIST_SERVANT.get(), AlchemistServant.setCustomAttributes().build());
+        event.put(SORCERER_SERVANT.get(), SorcererServant.createAttributes().build());
+        event.put(NECROMANCER_SERVANT.get(), NecromancerServant.setCustomAttributes().build());
+        event.put(FIRECALLER_SERVANT.get(), FireCallerServant.setCustomAttributes().build());
+        event.put(BOUND_FIRECALLER.get(), BoundFireCaller.setCustomAttributes().build());
+        event.put(BOUND_SORCERER.get(), BoundSorcerer.setCustomAttributes().build());
+    }
+
+    @SubscribeEvent
+    public void addPackFinders(AddPackFindersEvent event) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
+        if (ModList.get().isLoaded("goety_integration")) return;
+
+        var resourcePath = ModList.get().getModFileById(MODID).getFile()
+                .findResource("resourcepacks/goety_invasion_black_book");
+
+        var pack = Pack.readMetaAndCreate(
+                "goety_invasion/goety_invasion_black_book",
+                Component.literal("Goety Invasion Black Book Pack"),
+                true,
+                (path) -> new PathPackResources(path, resourcePath, false),
+                PackType.CLIENT_RESOURCES,
+                Pack.Position.BOTTOM,
+                PackSource.DEFAULT);
+
+        event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
+    }
+}
