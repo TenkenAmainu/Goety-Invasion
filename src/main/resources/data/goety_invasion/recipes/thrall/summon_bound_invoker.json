@@ -1,0 +1,31 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed",
+  "activation_item": {
+    "item": "illagerinvasion:primal_essence"
+  },
+  "craftType": "necroturgy",
+  "entity_to_summon": "goety_invasion:bound_invoker",
+  "soulCost": 4,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "tag": "forge:storage_blocks/lapis"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "illagerinvasion:hallowed_gem"
+    },
+    {
+      "item": "minecraft:totem_of_undying"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}
