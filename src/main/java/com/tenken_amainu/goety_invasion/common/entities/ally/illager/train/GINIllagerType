@@ -1,0 +1,134 @@
+package com.tenken_amainu.goety_invasion.common.entities.ally.illager.train;
+
+import com.Polarice3.Goety.api.entities.ally.illager.ITrainIllager;
+import com.Polarice3.Goety.common.blocks.ModBlocks;
+import com.Polarice3.Goety.common.entities.ModEntityType;
+import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
+import com.Polarice3.Goety.common.ritual.RitualChecker;
+import com.Polarice3.Goety.utils.BlockFinder;
+import com.tenken_amainu.goety_invasion.GINMod;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraftforge.common.Tags;
+
+public class GINIllagerType implements ITrainIllager {
+
+    @Override
+    public boolean canSpawn(Level level, BlockPos blockPos, int range) {
+        return this.getIllager(level, blockPos, range) != null;
+    }
+
+    @Override
+    public boolean mobCanTrainTo(Mob mob, Level level, BlockPos blockPos, int range) {
+        EntityType<?> entityType = this.getIllager(level, blockPos, range);
+        if (entityType == null) return false;
+
+        if (entityType == GINMod.INQUISITOR_SERVANT.get()) {
+            return mob.getType() == GINMod.BASHER_SERVANT.get();
+        }
+        if (entityType == GINMod.BASHER_SERVANT.get()) {
+            return mob.getType() == ModEntityType.VINDICATOR_SERVANT.get();
+        }
+
+        if (entityType == GINMod.MARAUDER_SERVANT.get()
+                || entityType == GINMod.ALCHEMIST_SERVANT.get()) {
+            return mob.getType() == ModEntityType.NEOLLAGER.get();
+        }
+
+        if (entityType == GINMod.PROVOKER_SERVANT.get()
+                || entityType == GINMod.SORCERER_SERVANT.get()
+                || entityType == GINMod.FIRECALLER_SERVANT.get()) {
+            return mob.getType() == ModEntityType.NEOLLAGER.get()
+                    && mob instanceof Neollager neollager
+                    && neollager.isMagic();
+        }
+
+        return false;
+    }
+
+    @Override
+    public EntityType<? extends Mob> getIllager(Level level, BlockPos blockPos, int range) {
+        RitualChecker checker = new RitualChecker(level, blockPos, blockState -> true, range, 0);
+
+        if (checker.hasBlocks(s -> s.getBlock() instanceof AnvilBlock, 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof SmithingTableBlock, 1)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.FENCES_WOODEN), 3)
+                && checker.hasBlocks(s -> s.is(ModBlocks.PALE_STEEL_BLOCK.get()), 16)
+                && checker.hasBlocks(s -> s.getBlock() instanceof BlastFurnaceBlock, 2)
+                && checker.hasBlocks(s -> s.is(BlockTags.BANNERS), 2)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.SAND), 15)
+                && checker.hasBlocks(s -> s.getBlock() instanceof MagmaBlock, 6)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CarvedPumpkinBlock, 3)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CactusBlock, 10)
+                && checker.hasBlocks(s -> s.getBlock() instanceof ChainBlock, 21)
+                && checker.hasBlocks(s -> s.getBlock().getDescriptionId().contains("bricks"), 102)
+                && checker.hasBlocks(s -> s.is(BlockTags.WALLS), 72)) {
+            return (EntityType<? extends Mob>) GINMod.INQUISITOR_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.is(Blocks.HAY_BLOCK) || s.is(Blocks.TARGET), 2)
+                && checker.hasBlocks(s -> s.is(BlockTags.PLANKS), 32)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CraftingTableBlock, 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CarvedPumpkinBlock, 2)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.FENCES_WOODEN), 16)
+                && checker.hasBlocks(s -> s.getBlock() instanceof FurnaceBlock, 1)) {
+            return (EntityType<? extends Mob>) GINMod.MARAUDER_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.is(Blocks.HAY_BLOCK) || s.is(Blocks.TARGET), 2)
+                && checker.hasBlocks(s -> s.is(BlockTags.PLANKS), 16)
+                && checker.hasBlocks(s -> s.getBlock() instanceof FletchingTableBlock, 2)
+                && checker.hasBlocks(s -> s.getBlock() instanceof BrewingStandBlock, 2)
+                && checker.hasBlocks(s -> s.is(ModBlocks.WITCH_POLE.get()), 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CarvedPumpkinBlock, 2)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.FENCES_WOODEN), 16)) {
+            return (EntityType<? extends Mob>) GINMod.ALCHEMIST_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.getBlock().getDescriptionId().contains("bricks"), 32)
+                && checker.hasBlocks(s -> s.getBlock() instanceof FireBlock, 2)
+                && checker.hasBlocks(s -> s.getBlock() instanceof AmethystBlock, 8)
+                && checker.hasBlocks(s -> s.is(BlockTags.WOOL), 10)
+                && BlockFinder.getNearbyEnchantPower(level, blockPos, range, 16)) {
+            return (EntityType<? extends Mob>) GINMod.SORCERER_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.is(Blocks.HAY_BLOCK) || s.is(Blocks.TARGET), 2)
+                && BlockFinder.getNearbyEnchantPower(level, blockPos, range, 8)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CarvedPumpkinBlock, 2)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.FENCES_WOODEN), 16)
+                && checker.hasBlocks(s -> s.is(BlockTags.BANNERS), 2)
+                && checker.hasBlocks(s -> s.is(BlockTags.WOOL), 10)) {
+            return (EntityType<? extends Mob>) GINMod.PROVOKER_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.getBlock() instanceof SmithingTableBlock, 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CraftingTableBlock, 1)
+                && checker.hasBlocks(s -> s.is(Tags.Blocks.FENCES_WOODEN), 3)
+                && checker.hasBlocks(s -> s.getBlock() instanceof BlastFurnaceBlock, 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof CarvedPumpkinBlock, 3)
+                && checker.hasBlocks(s -> s.getBlock().getDescriptionId().contains("bricks"), 32)
+                && checker.hasBlocks(s -> s.is(BlockTags.WALLS), 20)
+                && checker.hasBlocks(s -> s.is(BlockTags.BANNERS), 1)
+                && checker.hasBlocks(s -> s.getBlock() instanceof FurnaceBlock, 1)) {
+            return (EntityType<? extends Mob>) GINMod.BASHER_SERVANT.get();
+        }
+
+        if (checker.hasBlocks(s -> s.getBlock() instanceof MagmaBlock, 8)
+                && checker.hasBlocks(s -> s.getBlock() instanceof SugarCaneBlock, 9)
+                && checker.hasBlocks(s -> s.is(Blocks.GOLD_BLOCK), 2)
+                && checker.hasBlocks(s -> s.is(BlockTags.WOOL_CARPETS), 4)
+                && (checker.hasBlocks(s -> s.is(Blocks.DEAD_BUSH), 4)
+                || checker.hasBlocks(s -> s.is(BlockTags.DEAD_BUSH_MAY_PLACE_ON), 4))
+                && checker.hasBlocks(s -> s.is(Blocks.RED_SAND), 32)
+                && checker.hasBlocks(s -> s.is(Blocks.HAY_BLOCK), 8)) {
+            return (EntityType<? extends Mob>) GINMod.FIRECALLER_SERVANT.get();
+        }
+
+        return null;
+    }
+}
