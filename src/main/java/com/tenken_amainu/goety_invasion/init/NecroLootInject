@@ -1,0 +1,31 @@
+package com.tenken_amainu.goety_invasion.init;
+
+import com.tenken_amainu.goety_invasion.GINMod;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = GINMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class NecroLootInject {
+
+    @SubscribeEvent
+    public static void onLootTableLoad(LootTableLoadEvent event) {
+        if (event.getName().toString().equals("illagerinvasion:entities/necromancer")) {
+            event.getTable().addPool(getInjectPool("entities/necromancer"));
+        }
+    }
+
+    private static LootPool getInjectPool(String entryName) {
+        return LootPool.lootPool()
+                .add(getInjectEntry(entryName))
+                .name("goety_invasion_inject_pool")
+                .build();
+    }
+
+    private static LootPoolEntryContainer.Builder<?> getInjectEntry(String name) {
+        return LootTableReference.lootTableReference(GINMod.location("inject/" + name));
+    }
+}
