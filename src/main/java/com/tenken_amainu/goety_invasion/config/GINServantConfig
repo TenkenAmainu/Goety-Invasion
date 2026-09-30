@@ -1,0 +1,533 @@
+package com.tenken_amainu.goety_invasion.config;
+
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
+import net.minecraftforge.common.ForgeConfigSpec;
+
+import java.io.File;
+
+public class GINServantConfig {
+
+    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec SPEC;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ServantsIgnoreOwnerFriendlyFire;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ServantsImmuneToOwnProjectiles;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ServantsHealFromRobe;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ServantHealCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ServantHealTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantHealAmount;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerServantFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerConjureSkullCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerConjureSkullWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerConjureSkullCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerConjureSkullInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerConjureSkullSafetyRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerAreaDamageCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerAreaDamageWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerAreaDamageCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerAreaDamageInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerAreaDamageRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerAreaDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireCallerAreaDamagePushY;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireCallerAreaDamageFireTicks;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> FireCallerAreaDamagePlaceFire;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> FireCallerNamelessConvert;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerConjureSkullCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerConjureSkullWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerConjureSkullCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerConjureSkullInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerConjureSkullSafetyRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerAreaDamageCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerAreaDamageWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerAreaDamageCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerAreaDamageInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerAreaDamageRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerAreaDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundFireCallerAreaDamagePushY;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundFireCallerAreaDamageFireTicks;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> BoundFireCallerAreaDamagePlaceFire;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerAreaDamageCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerTeleportCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerFangAoeCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerAreaDamageRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerAreaDamageAmount;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerAreaDamagePushHorizontal;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundInvokerAreaDamagePushY;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerSummonVexCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerSummonVexInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerSummonVexCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerFangCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerFangInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerFangAoeCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerFangAoeInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerAreaDamageWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerAreaDamageCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerAreaDamageInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerTeleportWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerTeleportCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerTeleportInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerWololoWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerWololoCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundInvokerWololoInterval;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererTeleportCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererTeleportWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererTeleportCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererTeleportRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererFlamesCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererFlamesWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererFlamesCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererFlamesRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SorcererFlamesRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> SorcererFlamesDamage;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> SorcererNamelessConvert;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererTeleportCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererTeleportWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererTeleportCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererTeleportRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererFlamesCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererFlamesWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererFlamesCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererFlamesRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BoundSorcererFlamesRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoundSorcererFlamesDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerBowSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ProvokerBowAttackInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerBowRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ProvokerBuffWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ProvokerBuffInterval;
+    public static final ForgeConfigSpec.ConfigValue<Double> ProvokerBuffRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ProvokerBuffDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ProvokerBuffAmplifier;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerMaxLevel;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerHealthBonusPerLevel;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerHeartOfNightHealthMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerScaleBonusPerLevel;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerShieldDamageReduction;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerAuraRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerAuraDamageBoostAmplifier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerAuraSpeedAmplifier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerAuraEffectDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> NecromancerTargetShareRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonMax;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonBaseDay;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonBaseNight;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSummonHeartOfNightMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullWarmup;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullCastingTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullBaseCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerSkullPerLevel;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> InquisitorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> InquisitorServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> InquisitorServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> InquisitorServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> InquisitorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InquisitorShieldBlockLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InquisitorStunDuration;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BasherServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BasherServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BasherServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BasherServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BasherServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BasherShieldBlockLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BasherStunDuration;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> AlchemistServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AlchemistServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> AlchemistServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> AlchemistServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AlchemistPotionCooldown;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderServantChargingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> MarauderMeleeAttackRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MarauderMeleeAttackInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MarauderMeleeAttackAnimDuration;
+
+    static {
+        BUILDER.push("Servants");
+
+        BUILDER.push("General");
+        ServantsIgnoreOwnerFriendlyFire = BUILDER
+                .comment("Whether servants ignore friendly fire from their owner and other allies")
+                .define("servantsIgnoreOwnerFriendlyFire", true);
+        ServantsImmuneToOwnProjectiles = BUILDER
+                .comment("Whether servants are immune to projectiles fired by their owner or allies")
+                .define("servantsImmuneToOwnProjectiles", true);
+        ServantsHealFromRobe = BUILDER
+                .comment("Whether servants can heal if summoned while wearing an appropriate robe")
+                .define("servantsHealFromRobe", true);
+        ServantHealCost = BUILDER
+                .comment("Soul Energy per second for a Servant to heal")
+                .defineInRange("servantHealCost", 1, 0, Integer.MAX_VALUE);
+        ServantHealTime = BUILDER
+                .comment("How often Servants heal, in seconds")
+                .defineInRange("servantHealTime", 1, 0, Integer.MAX_VALUE);
+        ServantHealAmount = BUILDER
+                .comment("How much Health Servants heal")
+                .defineInRange("servantHealAmount", 1.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("FireCaller Servant");
+        BUILDER.push("Attributes");
+        FireCallerServantHealth = BUILDER.defineInRange("fireCallerServantHealth", 24.0D, 1.0D, Double.MAX_VALUE);
+        FireCallerServantArmor = BUILDER.defineInRange("fireCallerServantArmor", 4.0D, 0.0D, Double.MAX_VALUE);
+        FireCallerServantFollowRange = BUILDER.defineInRange("fireCallerServantFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        FireCallerServantMovementSpeed = BUILDER.defineInRange("fireCallerServantMovementSpeed", 0.5D, 0.0D, 2.0D);
+        FireCallerServantFlyingSpeed = BUILDER.defineInRange("fireCallerServantFlyingSpeed", 0.15D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Conjure Skull");
+        FireCallerConjureSkullCooldown = BUILDER.defineInRange("fireCallerConjureSkullCooldown", 160, 0, Integer.MAX_VALUE);
+        FireCallerConjureSkullWarmup = BUILDER.defineInRange("fireCallerConjureSkullWarmup", 60, 0, 72000);
+        FireCallerConjureSkullCastingTime = BUILDER.defineInRange("fireCallerConjureSkullCastingTime", 60, 0, 72000);
+        FireCallerConjureSkullInterval = BUILDER.defineInRange("fireCallerConjureSkullInterval", 400, 0, Integer.MAX_VALUE);
+        FireCallerConjureSkullSafetyRadius = BUILDER.defineInRange("fireCallerConjureSkullSafetyRadius", 5.0D, 0.0D, 64.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Area Damage");
+        FireCallerAreaDamageCooldown = BUILDER.defineInRange("fireCallerAreaDamageCooldown", 300, 0, Integer.MAX_VALUE);
+        FireCallerAreaDamageWarmup = BUILDER.defineInRange("fireCallerAreaDamageWarmup", 50, 0, 72000);
+        FireCallerAreaDamageCastingTime = BUILDER.defineInRange("fireCallerAreaDamageCastingTime", 50, 0, 72000);
+        FireCallerAreaDamageInterval = BUILDER.defineInRange("fireCallerAreaDamageInterval", 400, 0, Integer.MAX_VALUE);
+        FireCallerAreaDamageRadius = BUILDER.defineInRange("fireCallerAreaDamageRadius", 6.0D, 0.0D, 64.0D);
+        FireCallerAreaDamage = BUILDER.defineInRange("fireCallerAreaDamage", 6.0D, 0.0D, Double.MAX_VALUE);
+        FireCallerAreaDamagePushY = BUILDER.defineInRange("fireCallerAreaDamagePushY", 1.2D, 0.0D, 16.0D);
+        FireCallerAreaDamageFireTicks = BUILDER.defineInRange("fireCallerAreaDamageFireTicks", 120, 0, 72000);
+        FireCallerAreaDamagePlaceFire = BUILDER
+                .comment("Whether Area Damage places Fire blocks. WARNING: breaks terrain")
+                .define("fireCallerAreaDamagePlaceFire", false);
+        BUILDER.pop();
+
+        FireCallerNamelessConvert = BUILDER
+                .comment("Whether FireCaller Servant converts into Bound Fire Caller upon death if its owner wears the full Nameless Set")
+                .define("fireCallerNamelessConvert", true);
+        BUILDER.pop();
+
+        BUILDER.push("Bound Fire Caller");
+        BUILDER.push("Attributes");
+        BoundFireCallerHealth = BUILDER.defineInRange("boundFireCallerHealth", 24.0D, 1.0D, Double.MAX_VALUE);
+        BoundFireCallerArmor = BUILDER.defineInRange("boundFireCallerArmor", 4.0D, 0.0D, Double.MAX_VALUE);
+        BoundFireCallerFollowRange = BUILDER.defineInRange("boundFireCallerFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        BoundFireCallerMovementSpeed = BUILDER.defineInRange("boundFireCallerMovementSpeed", 0.5D, 0.0D, 2.0D);
+        BoundFireCallerFlyingSpeed = BUILDER.defineInRange("boundFireCallerFlyingSpeed", 0.15D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Conjure Skull");
+        BoundFireCallerConjureSkullCooldown = BUILDER.defineInRange("boundFireCallerConjureSkullCooldown", 160, 0, Integer.MAX_VALUE);
+        BoundFireCallerConjureSkullWarmup = BUILDER.defineInRange("boundFireCallerConjureSkullWarmup", 60, 0, 72000);
+        BoundFireCallerConjureSkullCastingTime = BUILDER.defineInRange("boundFireCallerConjureSkullCastingTime", 60, 0, 72000);
+        BoundFireCallerConjureSkullInterval = BUILDER.defineInRange("boundFireCallerConjureSkullInterval", 400, 0, Integer.MAX_VALUE);
+        BoundFireCallerConjureSkullSafetyRadius = BUILDER.defineInRange("boundFireCallerConjureSkullSafetyRadius", 5.0D, 0.0D, 64.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Area Damage");
+        BoundFireCallerAreaDamageCooldown = BUILDER.defineInRange("boundFireCallerAreaDamageCooldown", 300, 0, Integer.MAX_VALUE);
+        BoundFireCallerAreaDamageWarmup = BUILDER.defineInRange("boundFireCallerAreaDamageWarmup", 50, 0, 72000);
+        BoundFireCallerAreaDamageCastingTime = BUILDER.defineInRange("boundFireCallerAreaDamageCastingTime", 50, 0, 72000);
+        BoundFireCallerAreaDamageInterval = BUILDER.defineInRange("boundFireCallerAreaDamageInterval", 400, 0, Integer.MAX_VALUE);
+        BoundFireCallerAreaDamageRadius = BUILDER.defineInRange("boundFireCallerAreaDamageRadius", 6.0D, 0.0D, 64.0D);
+        BoundFireCallerAreaDamage = BUILDER.defineInRange("boundFireCallerAreaDamage", 6.0D, 0.0D, Double.MAX_VALUE);
+        BoundFireCallerAreaDamagePushY = BUILDER.defineInRange("boundFireCallerAreaDamagePushY", 1.2D, 0.0D, 16.0D);
+        BoundFireCallerAreaDamageFireTicks = BUILDER.defineInRange("boundFireCallerAreaDamageFireTicks", 120, 0, 72000);
+        BoundFireCallerAreaDamagePlaceFire = BUILDER
+                .comment("Whether Area Damage places Fire blocks. WARNING: breaks terrain")
+                .define("boundFireCallerAreaDamagePlaceFire", false);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Bound Invoker");
+        BUILDER.push("Attributes");
+        BoundInvokerHealth = BUILDER.defineInRange("boundInvokerHealth", 250.0D, 1.0D, Double.MAX_VALUE);
+        BoundInvokerArmor = BUILDER.defineInRange("boundInvokerArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        BoundInvokerFollowRange = BUILDER.defineInRange("boundInvokerFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        BoundInvokerMovementSpeed = BUILDER.defineInRange("boundInvokerMovementSpeed", 0.36D, 0.0D, 2.0D);
+        BoundInvokerFlyingSpeed = BUILDER.defineInRange("boundInvokerFlyingSpeed", 0.15D, 0.0D, 2.0D);
+        BoundInvokerAttackDamage = BUILDER.defineInRange("boundInvokerAttackDamage", 5.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Cooldowns");
+        BoundInvokerAreaDamageCooldown = BUILDER.defineInRange("boundInvokerAreaDamageCooldown", 300, 0, Integer.MAX_VALUE);
+        BoundInvokerTeleportCooldown = BUILDER.defineInRange("boundInvokerTeleportCooldown", 180, 0, Integer.MAX_VALUE);
+        BoundInvokerFangAoeCooldown = BUILDER.defineInRange("boundInvokerFangAoeCooldown", 100, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Area Damage");
+        BoundInvokerAreaDamageRadius = BUILDER.defineInRange("boundInvokerAreaDamageRadius", 6.0D, 0.0D, 32.0D);
+        BoundInvokerAreaDamageAmount = BUILDER.defineInRange("boundInvokerAreaDamageAmount", 11.0D, 0.0D, Double.MAX_VALUE);
+        BoundInvokerAreaDamagePushHorizontal = BUILDER.defineInRange("boundInvokerAreaDamagePushHorizontal", 6.0D, 0.0D, 32.0D);
+        BoundInvokerAreaDamagePushY = BUILDER.defineInRange("boundInvokerAreaDamagePushY", 0.65D, 0.0D, 8.0D);
+        BoundInvokerAreaDamageWarmup = BUILDER.defineInRange("boundInvokerAreaDamageWarmup", 50, 0, 72000);
+        BoundInvokerAreaDamageCastingTime = BUILDER.defineInRange("boundInvokerAreaDamageCastingTime", 50, 0, 72000);
+        BoundInvokerAreaDamageInterval = BUILDER.defineInRange("boundInvokerAreaDamageInterval", 400, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Summon Vex");
+        BoundInvokerSummonVexCastingTime = BUILDER.defineInRange("boundInvokerSummonVexCastingTime", 100, 0, 72000);
+        BoundInvokerSummonVexInterval = BUILDER.defineInRange("boundInvokerSummonVexInterval", 340, 0, Integer.MAX_VALUE);
+        BoundInvokerSummonVexCount = BUILDER.defineInRange("boundInvokerSummonVexCount", 4, 1, 64);
+        BUILDER.pop();
+
+        BUILDER.push("Fangs");
+        BoundInvokerFangCastingTime = BUILDER.defineInRange("boundInvokerFangCastingTime", 40, 0, 72000);
+        BoundInvokerFangInterval = BUILDER.defineInRange("boundInvokerFangInterval", 100, 0, Integer.MAX_VALUE);
+        BoundInvokerFangAoeCastingTime = BUILDER.defineInRange("boundInvokerFangAoeCastingTime", 40, 0, 72000);
+        BoundInvokerFangAoeInterval = BUILDER.defineInRange("boundInvokerFangAoeInterval", 100, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Teleport");
+        BoundInvokerTeleportWarmup = BUILDER.defineInRange("boundInvokerTeleportWarmup", 30, 0, 72000);
+        BoundInvokerTeleportCastingTime = BUILDER.defineInRange("boundInvokerTeleportCastingTime", 30, 0, 72000);
+        BoundInvokerTeleportInterval = BUILDER.defineInRange("boundInvokerTeleportInterval", 400, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Wololo");
+        BoundInvokerWololoWarmup = BUILDER.defineInRange("boundInvokerWololoWarmup", 40, 0, 72000);
+        BoundInvokerWololoCastingTime = BUILDER.defineInRange("boundInvokerWololoCastingTime", 140, 0, 72000);
+        BoundInvokerWololoInterval = BUILDER.defineInRange("boundInvokerWololoInterval", 600, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Sorcerer Servant");
+        BUILDER.push("Attributes");
+        SorcererServantHealth = BUILDER.defineInRange("sorcererServantHealth", 32.0D, 1.0D, Double.MAX_VALUE);
+        SorcererServantArmor = BUILDER.defineInRange("sorcererServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        SorcererServantFollowRange = BUILDER.defineInRange("sorcererServantFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        SorcererServantMovementSpeed = BUILDER.defineInRange("sorcererServantMovementSpeed", 0.38D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Teleport");
+        SorcererTeleportCooldown = BUILDER.defineInRange("sorcererTeleportCooldown", 220, 0, Integer.MAX_VALUE);
+        SorcererTeleportWarmup = BUILDER.defineInRange("sorcererTeleportWarmup", 30, 0, 72000);
+        SorcererTeleportCastingTime = BUILDER.defineInRange("sorcererTeleportCastingTime", 30, 0, 72000);
+        SorcererTeleportRange = BUILDER.defineInRange("sorcererTeleportRange", 10.0D, 0.0D, 64.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Conjure Flames");
+        SorcererFlamesCooldown = BUILDER.defineInRange("sorcererFlamesCooldown", 100, 0, Integer.MAX_VALUE);
+        SorcererFlamesWarmup = BUILDER.defineInRange("sorcererFlamesWarmup", 60, 0, 72000);
+        SorcererFlamesCastingTime = BUILDER.defineInRange("sorcererFlamesCastingTime", 60, 0, 72000);
+        SorcererFlamesRange = BUILDER.defineInRange("sorcererFlamesRange", 16.0D, 0.0D, 64.0D);
+        SorcererFlamesRadius = BUILDER.defineInRange("sorcererFlamesRadius", 1, 0, 8);
+        SorcererFlamesDamage = BUILDER.defineInRange("sorcererFlamesDamage", 3.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        SorcererNamelessConvert = BUILDER
+                .comment("Whether Sorcerer Servant converts into Bound Sorcerer upon death if its owner wears the full Nameless Set")
+                .define("sorcererNamelessConvert", true);
+        BUILDER.pop();
+
+        BUILDER.push("Bound Sorcerer");
+        BUILDER.push("Attributes");
+        BoundSorcererHealth = BUILDER.defineInRange("boundSorcererHealth", 32.0D, 1.0D, Double.MAX_VALUE);
+        BoundSorcererArmor = BUILDER.defineInRange("boundSorcererArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        BoundSorcererFollowRange = BUILDER.defineInRange("boundSorcererFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        BoundSorcererMovementSpeed = BUILDER.defineInRange("boundSorcererMovementSpeed", 0.38D, 0.0D, 2.0D);
+        BoundSorcererFlyingSpeed = BUILDER.defineInRange("boundSorcererFlyingSpeed", 0.15D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Teleport");
+        BoundSorcererTeleportCooldown = BUILDER.defineInRange("boundSorcererTeleportCooldown", 220, 0, Integer.MAX_VALUE);
+        BoundSorcererTeleportWarmup = BUILDER.defineInRange("boundSorcererTeleportWarmup", 30, 0, 72000);
+        BoundSorcererTeleportCastingTime = BUILDER.defineInRange("boundSorcererTeleportCastingTime", 30, 0, 72000);
+        BoundSorcererTeleportRange = BUILDER.defineInRange("boundSorcererTeleportRange", 10.0D, 0.0D, 64.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Conjure Flames");
+        BoundSorcererFlamesCooldown = BUILDER.defineInRange("boundSorcererFlamesCooldown", 100, 0, Integer.MAX_VALUE);
+        BoundSorcererFlamesWarmup = BUILDER.defineInRange("boundSorcererFlamesWarmup", 60, 0, 72000);
+        BoundSorcererFlamesCastingTime = BUILDER.defineInRange("boundSorcererFlamesCastingTime", 60, 0, 72000);
+        BoundSorcererFlamesRange = BUILDER.defineInRange("boundSorcererFlamesRange", 16.0D, 0.0D, 64.0D);
+        BoundSorcererFlamesRadius = BUILDER.defineInRange("boundSorcererFlamesRadius", 1, 0, 8);
+        BoundSorcererFlamesDamage = BUILDER.defineInRange("boundSorcererFlamesDamage", 3.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Provoker Servant");
+        BUILDER.push("Attributes");
+        ProvokerServantHealth = BUILDER.defineInRange("provokerServantHealth", 24.0D, 1.0D, Double.MAX_VALUE);
+        ProvokerServantArmor = BUILDER.defineInRange("provokerServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        ProvokerServantAttackDamage = BUILDER.defineInRange("provokerServantAttackDamage", 6.0D, 0.0D, Double.MAX_VALUE);
+        ProvokerServantFollowRange = BUILDER.defineInRange("provokerServantFollowRange", 12.0D, 0.0D, Double.MAX_VALUE);
+        ProvokerServantMovementSpeed = BUILDER.defineInRange("provokerServantMovementSpeed", 0.35D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Bow");
+        ProvokerBowSpeed = BUILDER.defineInRange("provokerBowSpeed", 1.0D, 0.0D, 5.0D);
+        ProvokerBowAttackInterval = BUILDER.defineInRange("provokerBowAttackInterval", 20, 1, 200);
+        ProvokerBowRange = BUILDER.defineInRange("provokerBowRange", 15.0D, 0.0D, 64.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Buff Ally");
+        ProvokerBuffWarmup = BUILDER.defineInRange("provokerBuffWarmup", 40, 0, 72000);
+        ProvokerBuffInterval = BUILDER.defineInRange("provokerBuffInterval", 300, 0, Integer.MAX_VALUE);
+        ProvokerBuffRadius = BUILDER.defineInRange("provokerBuffRadius", 12.0D, 0.0D, 64.0D);
+        ProvokerBuffDuration = BUILDER.defineInRange("provokerBuffDuration", 120, 0, 72000);
+        ProvokerBuffAmplifier = BUILDER.defineInRange("provokerBuffAmplifier", 1, 0, 10);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Necromancer Servant");
+        BUILDER.push("Attributes");
+        NecromancerServantHealth = BUILDER.defineInRange("necromancerServantHealth", 32.0D, 1.0D, Double.MAX_VALUE);
+        NecromancerServantArmor = BUILDER.defineInRange("necromancerServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        NecromancerServantFollowRange = BUILDER.defineInRange("necromancerServantFollowRange", 24.0D, 0.0D, Double.MAX_VALUE);
+        NecromancerServantMovementSpeed = BUILDER.defineInRange("necromancerServantMovementSpeed", 0.5D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Level Scaling");
+        NecromancerMaxLevel = BUILDER.defineInRange("necromancerMaxLevel", 2, 0, 10);
+        NecromancerHealthBonusPerLevel = BUILDER.defineInRange("necromancerHealthBonusPerLevel", 0.25D, 0.0D, 10.0D);
+        NecromancerHeartOfNightHealthMultiplier = BUILDER.defineInRange("necromancerHeartOfNightHealthMultiplier", 2.0D, 1.0D, 100.0D);
+        NecromancerScaleBonusPerLevel = BUILDER.defineInRange("necromancerScaleBonusPerLevel", 0.05D, 0.0D, 1.0D);
+        NecromancerShieldDamageReduction = BUILDER.defineInRange("necromancerShieldDamageReduction", 0.5D, 0.0D, 1.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Aura");
+        NecromancerAuraRadius = BUILDER.defineInRange("necromancerAuraRadius", 10.0D, 0.0D, 64.0D);
+        NecromancerAuraDamageBoostAmplifier = BUILDER.defineInRange("necromancerAuraDamageBoostAmplifier", 0, 0, 10);
+        NecromancerAuraSpeedAmplifier = BUILDER.defineInRange("necromancerAuraSpeedAmplifier", 0, 0, 10);
+        NecromancerAuraEffectDuration = BUILDER.defineInRange("necromancerAuraEffectDuration", 10, 0, 72000);
+        NecromancerTargetShareRadius = BUILDER.defineInRange("necromancerTargetShareRadius", 30.0D, 0.0D, 128.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Summon Undead");
+        NecromancerSummonCastingTime = BUILDER.defineInRange("necromancerSummonCastingTime", 100, 0, 72000);
+        NecromancerSummonInterval = BUILDER.defineInRange("necromancerSummonInterval", 340, 0, Integer.MAX_VALUE);
+        NecromancerSummonMax = BUILDER.defineInRange("necromancerSummonMax", 7, 1, 64);
+        NecromancerSummonBaseDay = BUILDER.defineInRange("necromancerSummonBaseDay", 2, 0, 64);
+        NecromancerSummonBaseNight = BUILDER.defineInRange("necromancerSummonBaseNight", 3, 0, 64);
+        NecromancerSummonHeartOfNightMultiplier = BUILDER.defineInRange("necromancerSummonHeartOfNightMultiplier", 2, 1, 10);
+        BUILDER.pop();
+
+        BUILDER.push("Conjure Skull");
+        NecromancerSkullCooldown = BUILDER.defineInRange("necromancerSkullCooldown", 100, 0, Integer.MAX_VALUE);
+        NecromancerSkullWarmup = BUILDER.defineInRange("necromancerSkullWarmup", 40, 0, 72000);
+        NecromancerSkullCastingTime = BUILDER.defineInRange("necromancerSkullCastingTime", 60, 0, 72000);
+        NecromancerSkullInterval = BUILDER.defineInRange("necromancerSkullInterval", 140, 0, Integer.MAX_VALUE);
+        NecromancerSkullBaseCount = BUILDER.defineInRange("necromancerSkullBaseCount", 1, 1, 64);
+        NecromancerSkullPerLevel = BUILDER.defineInRange("necromancerSkullPerLevel", 2, 0, 64);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Inquisitor Servant");
+        BUILDER.push("Attributes");
+        InquisitorServantHealth = BUILDER.defineInRange("inquisitorServantHealth", 80.0D, 1.0D, Double.MAX_VALUE);
+        InquisitorServantArmor = BUILDER.defineInRange("inquisitorServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        InquisitorServantAttackDamage = BUILDER.defineInRange("inquisitorServantAttackDamage", 7.0D, 0.0D, Double.MAX_VALUE);
+        InquisitorServantFollowRange = BUILDER.defineInRange("inquisitorServantFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        InquisitorServantMovementSpeed = BUILDER.defineInRange("inquisitorServantMovementSpeed", 0.33D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Shield");
+        InquisitorShieldBlockLimit = BUILDER.defineInRange("inquisitorShieldBlockLimit", 5, 1, 100);
+        InquisitorStunDuration = BUILDER.defineInRange("inquisitorStunDuration", 40, 0, 72000);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Basher Servant");
+        BUILDER.push("Attributes");
+        BasherServantHealth = BUILDER.defineInRange("basherServantHealth", 32.0D, 1.0D, Double.MAX_VALUE);
+        BasherServantArmor = BUILDER.defineInRange("basherServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        BasherServantAttackDamage = BUILDER.defineInRange("basherServantAttackDamage", 4.0D, 0.0D, Double.MAX_VALUE);
+        BasherServantFollowRange = BUILDER.defineInRange("basherServantFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        BasherServantMovementSpeed = BUILDER.defineInRange("basherServantMovementSpeed", 0.31D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Shield");
+        BasherShieldBlockLimit = BUILDER.defineInRange("basherShieldBlockLimit", 4, 1, 100);
+        BasherStunDuration = BUILDER.defineInRange("basherStunDuration", 60, 0, 72000);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.push("Alchemist Servant");
+        BUILDER.push("Attributes");
+        AlchemistServantHealth = BUILDER.defineInRange("alchemistServantHealth", 24.0D, 1.0D, Double.MAX_VALUE);
+        AlchemistServantArmor = BUILDER.defineInRange("alchemistServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        AlchemistServantFollowRange = BUILDER.defineInRange("alchemistServantFollowRange", 12.0D, 0.0D, Double.MAX_VALUE);
+        AlchemistServantMovementSpeed = BUILDER.defineInRange("alchemistServantMovementSpeed", 0.38D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        AlchemistPotionCooldown = BUILDER.defineInRange("alchemistPotionCooldown", 160, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Marauder Servant");
+        BUILDER.push("Attributes");
+        MarauderServantHealth = BUILDER.defineInRange("marauderServantHealth", 24.0D, 1.0D, Double.MAX_VALUE);
+        MarauderServantAttackDamage = BUILDER.defineInRange("marauderServantAttackDamage", 1.0D, 0.0D, Double.MAX_VALUE);
+        MarauderServantFollowRange = BUILDER.defineInRange("marauderServantFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        MarauderServantMovementSpeed = BUILDER.defineInRange("marauderServantMovementSpeed", 0.3D, 0.0D, 2.0D);
+        MarauderServantChargingSpeed = BUILDER.defineInRange("marauderServantChargingSpeed", 0.24D, 0.0D, 2.0D);
+        BUILDER.pop();
+
+        BUILDER.push("Melee");
+        MarauderMeleeAttackRange = BUILDER.defineInRange("marauderMeleeAttackRange", 3.0D, 0.0D, 16.0D);
+        MarauderMeleeAttackInterval = BUILDER.defineInRange("marauderMeleeAttackInterval", 20, 1, 200);
+        MarauderMeleeAttackAnimDuration = BUILDER.defineInRange("marauderMeleeAttackAnimDuration", 10, 1, 200);
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.pop();
+
+        SPEC = BUILDER.build();
+    }
+
+    public static void loadConfig(ForgeConfigSpec config, String path) {
+        CommentedFileConfig file = CommentedFileConfig.builder(new File(path))
+                .sync()
+                .autosave()
+                .writingMode(WritingMode.REPLACE)
+                .build();
+        file.load();
+        config.setConfig(file);
+    }
+}
