@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "__comment": "ownable entities that takes up 4 spaces in Esoteric Tesseracts",
+  "values": [
+    "goety_invasion:bound_invoker"
+  ]
+}
