@@ -1,0 +1,7 @@
+{
+  "name": "Artifices",
+  "description": "Orchestrate an ambitious conspiracy.",
+  "icon": "goety:ominous_pyre",
+  "parent": "goety:goety_invasion/summons",
+  "sortnum": 3
+}
