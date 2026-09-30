@@ -1,0 +1,16 @@
+{
+  "name": "Basher Servant",
+  "icon": "minecraft:shield",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You've managed to train a new type of warrior from Vindicators, one adept at using shields. They first deflect projectiles and bash creatures with their shields. Once their shield breaks, they fight on with axes like ordinary Vindicators. However, be aware that when their shield shatters, they are briefly stunned."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:basher_servant",
+      "text": "Sword and board!"
+    }
+  ]
+}

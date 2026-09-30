@@ -1,0 +1,16 @@
+{
+  "name": "Ominous Sorcerer Servant",
+  "icon": "goety_invasion:magical_flames_focus",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Unlike sorcerers who attempt to master all forms of magic, these illager magicians specialize in burning their enemies with magical flames."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:sorcerer_servant",
+      "text": "Don't stare at that hat too long, buddy—there's nothing inside it, just like your head."
+    }
+  ]
+}

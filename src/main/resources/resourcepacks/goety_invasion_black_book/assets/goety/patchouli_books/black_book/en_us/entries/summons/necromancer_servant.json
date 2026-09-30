@@ -1,0 +1,28 @@
+{
+  "name": "Illager Necromancer",
+  "icon": "goety_invasion:necrotic_dust",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Through rituals that enlighten your novice dark mages, you have created an Illager variant of the Necromancer. Though they are not undead themselves, they understand the secrets of necromancy far better than any mere skeleton."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:convert_evoker_to_necromancer"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:necromancer_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like other Necromancers, your Illager Necromancers can accept additional necromancy focus. If they are given a Heart of the Night, the skulls they hurl become empowered."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Naturally, feeding them compatible Soul Jars allows them to grow stronger. However, keep in mind that your Necromancer servants are still living beings. They will only return a Soul Jar if they die while in a vulnerable state after being revived by an Ominous Idol."
+    }
+  ]
+}

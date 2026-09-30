@@ -1,0 +1,16 @@
+{
+  "name": "Marauder Servant",
+  "icon": "illagerinvasion:platinum_infused_hatchet",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Illagers, skilled at throwing Platinum Infused Hatchets, hold a status among their kind similar to Pillagers. You've devised a method to train your Neoillagers into axe-throwing servants obedient to your will."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:marauder_servant",
+      "text": "Grey Cyclone"
+    }
+  ]
+}

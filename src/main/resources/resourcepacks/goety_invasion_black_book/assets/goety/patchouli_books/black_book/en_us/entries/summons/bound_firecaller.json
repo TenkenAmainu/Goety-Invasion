@@ -1,0 +1,28 @@
+{
+  "name": "Bound Firecaller",
+  "icon": "minecraft:fire_charge",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Firecaller's relic is the molten bolt he hurls. It is no creature of the Nether. He shaped it himself in the Overworld, from a lifelong study of the earth's crust and the fire that sleeps beneath it."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_firecaller"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "An old geomancer, he chose the red sands of the desert as his retreat, far from courts and raids. Now his soul is bound, and the fires he once called upon answer to you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_firecaller",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like other bound illagers, it floats above the ground, unaffected by gravity. Despite its spirit-like appearance, it cannot phase through walls and can still be harmed by conventional weaponry. The bound soul can be healed by right-clicking on it with Ectoplasm."
+    }
+  ]
+}

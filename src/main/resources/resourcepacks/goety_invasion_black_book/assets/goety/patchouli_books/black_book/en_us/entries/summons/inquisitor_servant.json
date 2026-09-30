@@ -1,0 +1,16 @@
+{
+  "name": "Inquisitor Servant",
+  "icon": "goety:pale_steel_block",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "True battle-hardened veterans! Bashers must undergo extensive training to be promoted to Inquisitors. Wielding stone swords and shields, they possess immense strength and unparalleled resilience. Before their shield is destroyed, they maintain the calm composure expected of seasoned warriors. Yet when an enemy shatters the shield that symbolizes their honor, they revert to their primal ferocity and savage brutality!"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:inquisitor_servant",
+      "text": "I didn't have this scar when I was young..."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Bound Sorcerer",
+  "icon": "illagerinvasion:unusual_dust",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Unusual Dust is not mere residue left behind by a spell. It is the crowning work of the Sorcerer's own black art, a study no other Illager has ever replicated. He bound his soul to the dust itself, so that even in death he might return."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_sorcerer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A petty noble among the Illagers, he marched alongside the raiding parties, and a Vindicator attended him as his personal guard. Now his soul is bound to the dust once more, and serves you in the same manner."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_sorcerer",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like other bound illagers, it floats above the ground, unaffected by gravity. Despite its spirit-like appearance, it cannot phase through walls and can still be harmed by conventional weaponry. The bound soul can be healed by right-clicking on it with Ectoplasm."
+    }
+  ]
+}

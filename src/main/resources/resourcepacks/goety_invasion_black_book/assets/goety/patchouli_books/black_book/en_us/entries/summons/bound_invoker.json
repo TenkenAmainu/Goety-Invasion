@@ -1,0 +1,28 @@
+{
+  "name": "Bound Invoker",
+  "icon": "illagerinvasion:primal_essence",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Primal Essence holds the core lifeblood and lingering spirit of the Invoker. This pure primal power breaks the limits of normal enchanting, greatly boosting the levels and potency of weapon enchantments."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_invoker"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Well, not content to let the Invoker's spirit fade into nothing, you decided to reshape his soul and call him back to this world... so you won't have to wander the mansion searching for him anymore."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_invoker",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Much like other bound illagers, the returned Invoker can float above ground and is unaffected by gravity. Despite their ethereal, spirit-like appearance, they cannot phase through walls and can still be harmed with conventional weaponry. The bound soul can be healed by right-clicking on them with Ectoplasm."
+    }
+  ]
+}

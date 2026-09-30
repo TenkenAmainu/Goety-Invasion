@@ -1,0 +1,16 @@
+{
+  "name": "Ally Surrendered",
+  "icon": "minecraft:skeleton_skull",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Invoker's power binds and controls its pitiful victims. These creatures, caught somewhere between Vexes and Skeletons, may share certain similarities in their creation with Tormentors. Regardless, you've devised a way to ruthlessly bind them to your will."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:ally_surrendered",
+      "text": "Grant us deliverance..."
+    }
+  ]
+}

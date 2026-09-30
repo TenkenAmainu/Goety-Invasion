@@ -1,0 +1,16 @@
+{
+  "name": "Firecaller Servant",
+  "icon": "goety_invasion:fire_call_focus",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Firecallers were once geomancer Illagers who studied the crust of the world and the fire beneath it. They hurl bolts of molten earth at your enemies, and on impact the bolt bursts, scorching the ground and flinging nearby creatures aside. Mind you don't get roasted by your own servant."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:firecaller_servant",
+      "text": "Let's see how you like it medium rare"
+    }
+  ]
+}

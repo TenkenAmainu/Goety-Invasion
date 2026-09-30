@@ -1,0 +1,16 @@
+{
+  "name": "Provoker Servant",
+  "icon": "minecraft:target",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Illagers possess magical aptitude, yet they do not use magic as their primary means of attack. Instead, they fight with bows and arrows, and periodically cast spells to grant Strength and Speed effects to nearby allies."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:provoker_servant",
+      "text": "You're on my list, mark my words"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Alchemist Servant",
+  "icon": "minecraft:splash_potion",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The enigmatic alchemists among the Illagers wield a variety of harmful potions to weaken creatures, then finish them off with expert archery. Their addition would become a formidable force within your Illager warband."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:alchemist_servant",
+      "text": "He's actually a cosplay enthusiast"
+    }
+  ]
+}
