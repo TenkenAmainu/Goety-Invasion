@@ -1,0 +1,19 @@
+{
+  "name": "Necro Shield Focus",
+  "icon": "goety_invasion:ill_necromancer_shield_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By studying the dark incantations of Illager Necromancers, you have devised a spell that allows you to impose your will upon the undead around you, controlling them briefly but effectively."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/ill_necromancer_shield_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Necro Staff allows you to slightly extend the duration of control. If you cast this spell with a Nameless Staff, the authority of the night is enough to render nearby undead permanently obedient to you."
+    }
+  ]
+}

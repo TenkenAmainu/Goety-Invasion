@@ -1,0 +1,19 @@
+{
+  "name": "Necro Skull Focus",
+  "icon": "goety_invasion:ill_necro_skull_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Drawing upon the knowledge of Illager Necromancers, you have devised a spell that improves upon the Haunted Skull, allowing you to launch these flying skulls at a much faster rate to strike your enemies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/ill_necro_skull_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Necro Staff allows you to fire three skulls at once. Furthermore, if you use a Nameless Staff to channel this spell, the skulls you launch inflict more potent negative effects."
+    }
+  ]
+}

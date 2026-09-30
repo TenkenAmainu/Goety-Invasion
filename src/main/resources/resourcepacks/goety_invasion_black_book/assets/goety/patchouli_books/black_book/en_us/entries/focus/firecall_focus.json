@@ -1,0 +1,19 @@
+{
+  "name": "Fire Call Focus",
+  "icon": "goety_invasion:fire_call_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Firecaller's magma bolt is no Nether-born thing. It is the fruit of an old geomancer's lifelong study of the earth's crust and the fire that sleeps beneath it. You have found a way to bind that craft into a focus of your own, and hurl the same burning earth at your foes."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/firecall_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bolt flies wherever you point it, and bursts upon impact, scorching the ground and flinging nearby creatures aside. A Geo Staff looses two additional bolts with each cast."
+    }
+  ]
+}

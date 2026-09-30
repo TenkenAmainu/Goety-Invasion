@@ -1,0 +1,15 @@
+{
+  "name": "Magical Flames Focus",
+  "icon": "goety_invasion:magical_flames_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Among the Illagers, the Sorcerers can wield a purple fire magic. You believe that the power of a focus can be used to channel this spell. Upon casting, the spell targets the nearest entity, then attempts to summon a 3x3 patch of Magical Flames beneath their feet."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/magicalflames_focus"
+    }
+  ]
+}

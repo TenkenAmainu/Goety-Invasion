@@ -1,0 +1,19 @@
+{
+  "name": "Surrendered Focus",
+  "icon": "goety_invasion:surrendered_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have taken notice of the controlled and tormented Surrendereds serving under the Invoker. As a dark magician, you have no obligation to free them from their suffering—but you are quite interested in giving them a new master. After disposing of their former owner, you can summon them for yourself."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/surrendered_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "An Ominous Staff doubles the number of Surrendered you can summon."
+    }
+  ]
+}

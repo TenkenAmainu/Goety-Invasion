@@ -1,0 +1,19 @@
+{
+  "name": "Invoker Fangs Focus",
+  "icon": "goety_invasion:invoker_fangs_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Summons a row of Invoker Fangs in front of you, dealing damage that ignores armor. Sneaking instead summons a ring of fangs around each nearby enemy."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/conjurefangs_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with an Ominous Staff allows you to unleash three rows of Invoker Fangs at once. Sneak-casting generates more fangs surrounding you."
+    }
+  ]
+}
