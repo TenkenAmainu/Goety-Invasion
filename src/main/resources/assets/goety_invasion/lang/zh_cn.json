@@ -1,0 +1,56 @@
+{
+  "item.goety_invasion.logo": "Logo",
+  "item.goety_invasion.ill_necro_soul_jar": "灵魂罐",
+  "item.goety_invasion.necrotic_dust": "死术之尘",
+
+  "item.goety_invasion.magical_flames_focus": "巫术之火聚晶",
+  "item.goety_invasion.magical_flames_focus.info": "以巫术之火焚烧敌人",
+  "item.goety_invasion.invoker_fangs_focus": "祈灵尖牙聚晶",
+  "item.goety_invasion.invoker_fangs_focus.info": "以多种形式召唤更强尖牙,既可以撕咬敌人又可以击飞敌人",
+  "item.goety_invasion.surrendered_focus": "骨役聚晶",
+  "item.goety_invasion.surrendered_focus.info": "召唤亡骨役奴为你作战",
+  "item.goety_invasion.ill_necro_skull_focus": "灵颅束聚晶",
+  "item.goety_invasion.ill_necro_skull_focus.info": "发射死灵法师的颅束以强化友方亡灵或者削弱并伤害敌人",
+  "item.goety_invasion.ill_necromancer_shield_focus": "死灵护身聚晶",
+  "item.goety_invasion.ill_necromancer_shield_focus.info": "暂时令附近的亡灵保护你",
+  "item.goety_invasion.fire_call_focus": "唤火聚晶",
+  "item.goety_invasion.fire_call_focus.info": "召唤飞行岩浆块轰击敌人",
+
+  "item.goety_invasion.ally_surrendered_spawn_egg": "亡骨役奴仆从刷怪蛋",
+  "item.goety_invasion.marauder_servant_spawn_egg": "掳掠者仆从刷怪蛋",
+  "item.goety_invasion.inquisitor_servant_spawn_egg": "裁决者仆从刷怪蛋",
+  "item.goety_invasion.provoker_servant_spawn_egg": "挑衅者仆从刷怪蛋",
+  "item.goety_invasion.basher_servant_spawn_egg": "猛击者仆从刷怪蛋",
+  "item.goety_invasion.alchemist_servant_spawn_egg": "炼金术士仆从刷怪蛋",
+  "item.goety_invasion.bound_invoker_spawn_egg": "被绑定的祈灵师刷怪蛋",
+  "item.goety_invasion.bound_sorcerer_spawn_egg": "被绑定的不详术士刷怪蛋",
+  "item.goety_invasion.sorcerer_servant_spawn_egg": "不祥术士仆从刷怪蛋",
+  "item.goety_invasion.necromancer_servant_spawn_egg": "死灵法师仆从刷怪蛋",
+  "item.goety_invasion.firecaller_servant_spawn_egg": "唤火者仆从刷怪蛋",
+  "item.goety_invasion.bound_firecaller_spawn_egg": "被绑定的唤火者刷怪蛋",
+
+  "entity.goety_invasion.ally_surrendered": "亡骨役奴",
+  "entity.goety_invasion.marauder_servant": "掳掠者仆从",
+  "entity.goety_invasion.inquisitor_servant": "裁决者仆从",
+  "entity.goety_invasion.provoker_servant": "挑衅者仆从",
+  "entity.goety_invasion.basher_servant": "猛击者仆从",
+  "entity.goety_invasion.alchemist_servant": "炼金术士仆从",
+  "entity.goety_invasion.bound_invoker": "被绑定的祈灵师",
+  "entity.goety_invasion.bound_sorcerer": "被绑定的不详术士",
+  "entity.goety_invasion.sorcerer_servant": "不祥术士仆从",
+  "entity.goety_invasion.necromancer_servant": "死灵法师仆从",
+  "entity.goety_invasion.firecaller_servant": "唤火者仆从",
+  "entity.goety_invasion.bound_firecaller": "被绑定的唤火者",
+
+  "entity.goety_invasion.ally_flying_magma": "岩浆弹",
+  "entity.goety_invasion.ally_necro_skull_bolt": "死灵颅束",
+  "entity.goety_invasion.ally_skull_bolt": "颅束",
+
+  "message.goety_invasion.inquisitor_servant.shield_broken": "盾牌已碎，请直接给予新盾牌",
+  "message.goety_invasion.inquisitor_servant.shield_full": "盾牌已满耐久，无需修复",
+  "message.goety_invasion.inquisitor_servant.has_shield": "仆从已有盾牌，请先用木板修复",
+
+  "block.goety_invasion.ally_magic_fire": "巫术之火",
+
+  "effect.goety_invasion.necromancer_shield": "死灵护身"
+}
