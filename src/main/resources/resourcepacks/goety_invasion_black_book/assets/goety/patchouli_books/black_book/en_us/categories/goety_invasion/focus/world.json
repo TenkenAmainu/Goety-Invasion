@@ -1,0 +1,7 @@
+{
+  "name": "Exploration",
+  "description": "Unearth the secrets of the Illagers.",
+  "icon": "goety_invasion:necrotic_dust",
+  "parent": "goety:goety_invasion/focus",
+  "sortnum": 3
+}
