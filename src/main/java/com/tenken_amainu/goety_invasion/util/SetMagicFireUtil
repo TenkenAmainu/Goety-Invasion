@@ -1,0 +1,45 @@
+package com.tenken_amainu.goety_invasion.util;
+
+import com.tenken_amainu.goety_invasion.GINMod;
+import com.tenken_amainu.goety_invasion.common.blockentity.AllyMagicFireBlockEntity;
+import fuzs.illagerinvasion.init.ModRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+
+public class SetMagicFireUtil {
+
+    public static void trySetFire(LivingEntity target, ServerLevel level) {
+        trySetFireAt(target.blockPosition(), level);
+    }
+
+    public static void trySetFire(LivingEntity target, ServerLevel level, @Nullable LivingEntity owner) {
+        trySetFireAt(target.blockPosition(), level, owner);
+    }
+
+    private static void trySetFireAt(BlockPos pos, ServerLevel level) {
+        if (!level.getBlockState(pos).isAir()) return;
+        BlockState fireState = ModRegistry.MAGIC_FIRE_BLOCK.get().defaultBlockState();
+        if (fireState.canSurvive(level, pos)) {
+            level.setBlock(pos, fireState, 3);
+        }
+    }
+
+    public static void trySetFireAt(BlockPos pos, ServerLevel level, @Nullable LivingEntity owner) {
+        if (owner == null) {
+            trySetFireAt(pos, level);
+            return;
+        }
+        if (!level.getBlockState(pos).isAir()) return;
+        BlockState fireState = GINMod.ALLY_MAGIC_FIRE.get().defaultBlockState();
+        if (fireState.canSurvive(level, pos)) {
+            level.setBlock(pos, fireState, 3);
+            if (level.getBlockEntity(pos) instanceof AllyMagicFireBlockEntity be) {
+                be.setOwner(owner.getUUID());
+            }
+        }
+    }
+}
