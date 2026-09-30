@@ -1,0 +1,42 @@
+package com.tenken_amainu.goety_invasion.common.blockentity;
+
+import com.Polarice3.Goety.common.blocks.entities.OwnedBlockEntity;
+import com.tenken_amainu.goety_invasion.GINMod;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.UUID;
+
+public class AllyMagicFireBlockEntity extends OwnedBlockEntity {
+    private UUID ownerUUID;
+
+    public AllyMagicFireBlockEntity(BlockPos pos, BlockState state) {
+        super(GINMod.ALLY_MAGIC_FIRE_BLOCKENTITY.get(), pos, state);
+    }
+
+    public void setOwner(UUID uuid) {
+        this.ownerUUID = uuid;
+        setChanged();
+    }
+
+    public UUID getOwner() {
+        return ownerUUID;
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        if (ownerUUID != null) {
+            tag.putUUID("Owner", ownerUUID);
+        }
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if (tag.hasUUID("Owner")) {
+            ownerUUID = tag.getUUID("Owner");
+        }
+    }
+}
