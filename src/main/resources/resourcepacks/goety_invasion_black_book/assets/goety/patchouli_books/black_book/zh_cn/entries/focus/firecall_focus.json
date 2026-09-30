@@ -1,0 +1,19 @@
+{
+  "name": "唤火聚晶",
+  "icon": "goety_invasion:fire_call_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "唤火者掷出的岩浆弹并非来自下界的造物，而是一位年迈地卜师毕生钻研地壳与壳下之火的成果。你设法将这门技艺封入聚晶之中，得以将同样的灼热之土掷向你的敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/firecall_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "岩浆弹会沿着你的视线飞向你指的方向，命中时炸开一片焦土，将周围的生物一并掀飞。地卜魔杖每次施法会额外射出两枚岩浆弹。"
+    }
+  ]
+}

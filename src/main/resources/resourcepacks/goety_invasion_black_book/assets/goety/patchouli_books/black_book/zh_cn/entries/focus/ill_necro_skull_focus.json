@@ -1,0 +1,19 @@
+{
+  "name": "灵颅束聚晶",
+  "icon": "goety_invasion:ill_necro_skull_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "利用刌民死灵法师的知识，你创造出一种法术。这个法术改进了缠魂飞颅，允许你将这些飞行头骨以更快的速度发射出去攻击生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/ill_necro_skull_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "死灵魔杖允许你同时发射三个头颅。此外，如果你使用无名魔杖装载这个法术，则你发射的头颅能够造成更强力的负面效果。"
+    }
+  ]
+}

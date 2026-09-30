@@ -1,0 +1,19 @@
+{
+  "name": "骨役聚晶",
+  "icon": "goety_invasion:surrendered_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你注意到祈灵师手下那些被控制并饱经折磨的役奴。当然作为黑魔法师你没有义务帮助它们解脱，不过你倒是对于给它们换个主人很感兴趣，在解决了它们的前任主人之后你就能召唤它们了。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/surrendered_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "不祥魔杖允许你召唤的亡骨役奴数量翻倍。"
+    }
+  ]
+}

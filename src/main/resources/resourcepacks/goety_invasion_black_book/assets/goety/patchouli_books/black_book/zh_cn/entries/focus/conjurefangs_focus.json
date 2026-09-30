@@ -1,0 +1,19 @@
+{
+  "name": "祈灵尖牙聚晶",
+  "icon": "goety_invasion:invoker_fangs_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在你面前召唤一排祈灵尖牙，造成无视目标护甲的伤害。潜行则会以周围每个敌人为中心召唤一圈尖牙。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/conjurefangs_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用不祥魔杖施法时，你可以一次释放出三排祈灵尖牙。潜行施法会生成更多环绕你的尖牙。"
+    }
+  ]
+}

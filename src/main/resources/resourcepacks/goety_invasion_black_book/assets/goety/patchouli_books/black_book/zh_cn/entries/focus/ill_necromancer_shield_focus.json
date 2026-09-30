@@ -1,0 +1,19 @@
+{
+  "name": "死灵护身聚晶",
+  "icon": "goety_invasion:ill_necromancer_shield_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过学习灾厄村民死灵法师的黑暗咒语，你设计出一种法术，允许你将你的意志强加于周围的亡灵生物，以一种短暂但有效的方式控制它们。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/ill_necromancer_shield_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "死灵魔杖允许你稍微延长可控制的时长。如果你使用无名魔杖施法，暗夜的权能足以让周围的亡灵永久服从于你。"
+    }
+  ]
+}

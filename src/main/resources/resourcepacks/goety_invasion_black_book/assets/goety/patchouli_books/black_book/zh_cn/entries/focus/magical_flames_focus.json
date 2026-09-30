@@ -1,0 +1,15 @@
+{
+  "name": "巫术之火聚晶",
+  "icon": "goety_invasion:magical_flames_focus",
+  "category": "goety:goety_invasion/focus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "灾厄村民中的不祥术士能够使用一种紫色的巫术魔法火焰，你认为可以用聚晶的力量承载这种法术。该法术在施法时会以附近最近的实体作为目标，施法完成后尝试在目标脚下生成范围为3*3的巫术之火。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:focus/magicalflames_focus"
+    }
+  ]
+}
