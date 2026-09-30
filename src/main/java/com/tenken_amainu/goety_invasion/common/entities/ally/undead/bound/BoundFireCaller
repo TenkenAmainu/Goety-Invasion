@@ -1,0 +1,261 @@
+package com.tenken_amainu.goety_invasion.common.entities.ally.undead.bound;
+
+import com.Polarice3.Goety.common.entities.ai.AvoidTargetGoal;
+import com.Polarice3.Goety.common.entities.ally.undead.bound.AbstractBoundIllager;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModSounds;
+import com.Polarice3.Goety.utils.MobUtil;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllyFlyingMagma;
+import com.tenken_amainu.goety_invasion.config.GINServantConfig;
+import fuzs.illagerinvasion.init.ModRegistry;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.monster.AbstractIllager;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+
+import java.util.List;
+
+public class BoundFireCaller extends AbstractBoundIllager {
+
+    private int conjureSkullCooldown = 0;
+    private int areaDamageCooldown = 0;
+
+    public BoundFireCaller(EntityType<? extends Owned> type, Level worldIn) {
+        super(type, worldIn);
+    }
+
+    @Override
+    public BoundArmPose getArmPose() {
+        return this.isCastingSpell() ? BoundArmPose.SPELLCASTING : BoundArmPose.NEUTRAL;
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(1, new FireCallerCastingSpellGoal());
+        this.goalSelector.addGoal(2, new AvoidTargetGoal<>(this, LivingEntity.class, 8.0F, 0.6D, 1.0D));
+        this.goalSelector.addGoal(3, new FireCallerAreaDamageGoal());
+        this.goalSelector.addGoal(4, new FireCallerConjureSkullGoal());
+    }
+
+    @Override
+    public void miscGoal() {
+        this.goalSelector.addGoal(8, new RaiderWanderGoal<>(this, 0.6D));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+    }
+
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.5D)
+                .add(Attributes.FLYING_SPEED, 0.15D)
+                .add(Attributes.FOLLOW_RANGE, GINServantConfig.BoundFireCallerFollowRange.get())
+                .add(Attributes.ARMOR, GINServantConfig.BoundFireCallerArmor.get())
+                .add(Attributes.MAX_HEALTH, GINServantConfig.BoundFireCallerHealth.get());
+    }
+
+    public void setConfigurableAttributes() {
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.BoundFireCallerHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.BoundFireCallerArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.BoundFireCallerFollowRange.get());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.conjureSkullCooldown = compound.getInt("ConjureSkullCooldown");
+        this.areaDamageCooldown = compound.getInt("AreaDamageCooldown");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("ConjureSkullCooldown", this.conjureSkullCooldown);
+        compound.putInt("AreaDamageCooldown", this.areaDamageCooldown);
+    }
+
+    @Override protected SoundEvent getAmbientSound() { return ModRegistry.FIRECALLER_AMBIENT_SOUND_EVENT.get(); }
+    @Override protected SoundEvent getDeathSound() { return ModRegistry.FIRECALLER_DEATH_SOUND_EVENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return ModRegistry.FIRECALLER_HURT_SOUND_EVENT.get(); }
+    @Override public SoundEvent getCelebrateSound() { return ModRegistry.FIRECALLER_AMBIENT_SOUND_EVENT.get(); }
+    @Override protected SoundEvent getCastingSoundEvent() { return ModRegistry.FIRECALLER_CAST_SOUND_EVENT.get(); }
+
+    @Override
+    public void die(DamageSource cause) {
+        this.playSound(ModSounds.DEAD_MOAN.get(), 2.0F, 1.0F);
+        super.die(cause);
+    }
+
+    @Override public float getVoicePitch() { return 0.45F; }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override public int xpReward() { return 15; }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.conjureSkullCooldown > 0) --this.conjureSkullCooldown;
+        if (this.areaDamageCooldown > 0) --this.areaDamageCooldown;
+
+        if (this.level().isClientSide) {
+            for (int i = 0; i < 2; ++i) {
+                this.level().addParticle(ParticleTypes.CLOUD,
+                        this.getRandomX(0.5D), this.getY() + 0.5D, this.getRandomZ(0.5D),
+                        (0.5D - this.random.nextDouble()) * 0.15D, 0.01F,
+                        (0.5D - this.random.nextDouble()) * 0.15D);
+            }
+        }
+    }
+
+    class FireCallerCastingSpellGoal extends BoundCastingSpellGoal {
+        @Override
+        public void tick() {
+            if (BoundFireCaller.this.getTarget() != null) {
+                BoundFireCaller.this.getLookControl().setLookAt(
+                        BoundFireCaller.this.getTarget(),
+                        BoundFireCaller.this.getMaxHeadYRot(),
+                        BoundFireCaller.this.getMaxHeadXRot());
+            }
+        }
+    }
+
+    public class FireCallerConjureSkullGoal extends BoundUseSpellGoal {
+
+        private List<LivingEntity> nearbyPlayersOrGolems() {
+            double radius = GINServantConfig.BoundFireCallerConjureSkullSafetyRadius.get();
+            return BoundFireCaller.this.level().getEntitiesOfClass(
+                    LivingEntity.class,
+                    BoundFireCaller.this.getBoundingBox().inflate(radius),
+                    e -> (e instanceof Player || e instanceof net.minecraft.world.entity.animal.IronGolem)
+                            && !BoundFireCaller.this.isAlliedTo(e));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (BoundFireCaller.this.getTarget() == null) return false;
+            if (BoundFireCaller.this.isCastingSpell()) return false;
+            if (BoundFireCaller.this.conjureSkullCooldown > 0) return false;
+            return this.nearbyPlayersOrGolems().isEmpty();
+        }
+
+        @Override
+        public void tick() {
+            if (BoundFireCaller.this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.FLAME,
+                        BoundFireCaller.this.getX(), BoundFireCaller.this.getY() + 2.5, BoundFireCaller.this.getZ(),
+                        2, 0.2D, 0.2D, 0.2D, 0.05D);
+                serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE,
+                        BoundFireCaller.this.getX(), BoundFireCaller.this.getY() + 2.5, BoundFireCaller.this.getZ(),
+                        2, 0.2D, 0.2D, 0.2D, 0.05D);
+            }
+            super.tick();
+        }
+
+        private void shootSkullAt(LivingEntity target) {
+            this.shootSkullAt(
+                    target.getX(),
+                    target.getY() + target.getEyeHeight() * 0.5,
+                    target.getZ());
+        }
+
+        private void shootSkullAt(double targetX, double targetY, double targetZ) {
+            double x = BoundFireCaller.this.getX();
+            double y = BoundFireCaller.this.getY() + 2.5;
+            double z = BoundFireCaller.this.getZ();
+
+            AllyFlyingMagma magma = new AllyFlyingMagma(
+                    BoundFireCaller.this.level(),
+                    BoundFireCaller.this,
+                    targetX - x, targetY - y, targetZ - z);
+            magma.setOwner(BoundFireCaller.this);
+            magma.setPosRaw(x, y, z);
+            BoundFireCaller.this.level().addFreshEntity(magma);
+        }
+
+        @Override
+        protected void performSpellCasting() {
+            if (BoundFireCaller.this.getTarget() != null) {
+                this.shootSkullAt(BoundFireCaller.this.getTarget());
+            }
+            if (BoundFireCaller.this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SMOKE,
+                        BoundFireCaller.this.getX(), BoundFireCaller.this.getY() + 2.5, BoundFireCaller.this.getZ(),
+                        40, 0.4D, 0.4D, 0.4D, 0.15D);
+            }
+            BoundFireCaller.this.conjureSkullCooldown = GINServantConfig.BoundFireCallerConjureSkullCooldown.get();
+        }
+
+        @Override protected int getCastWarmupTime() { return GINServantConfig.BoundFireCallerConjureSkullWarmup.get(); }
+        @Override protected int getCastingTime() { return GINServantConfig.BoundFireCallerConjureSkullCastingTime.get(); }
+        @Override protected int getCastingInterval() { return GINServantConfig.BoundFireCallerConjureSkullInterval.get(); }
+        @Override protected SoundEvent getSpellPrepareSound() { return SoundEvents.EVOKER_PREPARE_ATTACK; }
+        @Override protected BoundSpell getSpell() { return BoundSpell.FANGS; }
+    }
+
+    public class FireCallerAreaDamageGoal extends BoundUseSpellGoal {
+
+        @Override
+        public boolean canUse() {
+            if (BoundFireCaller.this.getTarget() == null) return false;
+            if (BoundFireCaller.this.isCastingSpell()) return false;
+            return BoundFireCaller.this.areaDamageCooldown <= 0;
+        }
+
+        private List<LivingEntity> getTargets() {
+            double radius = GINServantConfig.BoundFireCallerAreaDamageRadius.get();
+            return BoundFireCaller.this.level().getEntitiesOfClass(
+                    LivingEntity.class,
+                    BoundFireCaller.this.getBoundingBox().inflate(radius),
+                    e -> !(e instanceof AbstractBoundIllager)
+                            && !(e instanceof AbstractIllager)
+                            && !(e instanceof Ravager)
+                            && !BoundFireCaller.this.isAlliedTo(e));
+        }
+
+        private void buff(LivingEntity entity) {
+            if (BoundFireCaller.this.isAlliedTo(entity)) return;
+
+            entity.push(0.0f, GINServantConfig.BoundFireCallerAreaDamagePushY.get().floatValue(), 0.0f);
+            entity.hurt(BoundFireCaller.this.damageSources().magic(),
+                    GINServantConfig.BoundFireCallerAreaDamage.get().floatValue());
+            entity.setRemainingFireTicks(GINServantConfig.BoundFireCallerAreaDamageFireTicks.get());
+
+            if (BoundFireCaller.this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SMOKE,
+                        entity.getX(), entity.getY() + 2, entity.getZ(),
+                        10, 0.2D, 0.2D, 0.2D, 0.015D);
+            }
+        }
+
+        @Override
+        protected void performSpellCasting() {
+            this.getTargets().forEach(this::buff);
+            BoundFireCaller.this.areaDamageCooldown = GINServantConfig.BoundFireCallerAreaDamageCooldown.get();
+        }
+
+        @Override protected int getCastWarmupTime() { return GINServantConfig.BoundFireCallerAreaDamageWarmup.get(); }
+        @Override protected int getCastingTime() { return GINServantConfig.BoundFireCallerAreaDamageCastingTime.get(); }
+        @Override protected int getCastingInterval() { return GINServantConfig.BoundFireCallerAreaDamageInterval.get(); }
+        @Override protected SoundEvent getSpellPrepareSound() { return SoundEvents.EVOKER_PREPARE_ATTACK; }
+        @Override protected BoundSpell getSpell() { return BoundSpell.WOLOLO; }
+    }
+}
