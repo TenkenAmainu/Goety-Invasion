@@ -1,0 +1,119 @@
+package com.tenken_amainu.goety_invasion.config;
+
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
+import net.minecraftforge.common.ForgeConfigSpec;
+
+import java.io.File;
+
+public class GINSpellConfig {
+    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec SPEC;
+
+    public static final ForgeConfigSpec.ConfigValue<String> NecromancerShieldBlacklist;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> ConjureSkullCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ConjureSkullDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ConjureSkullCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerShieldCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerShieldDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NecromancerShieldCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> MagicalFlamesCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MagicalFlamesDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MagicalFlamesCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> MagicalFlamesDirectDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> MagicalFlamesAreaDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MagicalFlamesRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> InvokerFangsCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InvokerFangsDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InvokerFangsCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> InvokerFangsBaseDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InvokerFangsRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SurrenderedBaseCount;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> FlyingMagmaCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FlyingMagmaDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FlyingMagmaCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlyingMagmaDirectDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlyingMagmaAreaDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlyingMagmaAreaRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FlyingMagmaRange;
+
+    static {
+        BUILDER.push("Spells");
+
+        BUILDER.push("Conjure Skull Spell");
+        ConjureSkullCost = BUILDER.defineInRange("conjureSkullCost", 10, 0, Integer.MAX_VALUE);
+        ConjureSkullDuration = BUILDER.defineInRange("conjureSkullDuration", 30, 0, 72000);
+        ConjureSkullCoolDown = BUILDER.defineInRange("conjureSkullCoolDown", 60, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Necromancer Shield Spell");
+        NecromancerShieldCost = BUILDER.defineInRange("necromancerShieldCost", 60, 0, Integer.MAX_VALUE);
+        NecromancerShieldDuration = BUILDER.defineInRange("necromancerShieldDuration", 40, 0, 72000);
+        NecromancerShieldCoolDown = BUILDER.defineInRange("necromancerShieldCoolDown", 400, 0, Integer.MAX_VALUE);
+        NecromancerShieldBlacklist = BUILDER
+                .comment("Comma-separated entity type IDs the Necromancer Shield should NOT affect. Leave empty for no blacklist.")
+                .define("necromancerShieldBlacklist", "goety:apostle,goetyawaken:nameless_one,irons_spellbooks:dead_king");
+        BUILDER.pop();
+
+        BUILDER.push("Magical Flames Spell");
+        MagicalFlamesCost = BUILDER.defineInRange("magicalFlamesCost", 12, 0, Integer.MAX_VALUE);
+        MagicalFlamesDuration = BUILDER.defineInRange("magicalFlamesDuration", 30, 0, 72000);
+        MagicalFlamesCoolDown = BUILDER.defineInRange("magicalFlamesCoolDown", 120, 0, Integer.MAX_VALUE);
+        MagicalFlamesDirectDamage = BUILDER.defineInRange("magicalFlamesDirectDamage", 3.0, 0, Double.MAX_VALUE);
+        MagicalFlamesAreaDamage = BUILDER.defineInRange("magicalFlamesAreaDamage", 1.5, 0, Double.MAX_VALUE);
+        MagicalFlamesRange = BUILDER.defineInRange("magicalFlamesRange", 16, 0, 256);
+        BUILDER.pop();
+
+        BUILDER.push("Invoker Fangs Spell");
+        InvokerFangsCost = BUILDER.defineInRange("invokerFangsCost", 24, 0, Integer.MAX_VALUE);
+        InvokerFangsDuration = BUILDER.defineInRange("invokerFangsDuration", 40, 0, 72000);
+        InvokerFangsCoolDown = BUILDER.defineInRange("invokerFangsCoolDown", 140, 0, Integer.MAX_VALUE);
+        InvokerFangsBaseDamage = BUILDER.defineInRange("invokerFangsBaseDamage", 10.0, 0, Double.MAX_VALUE);
+        InvokerFangsRange = BUILDER.defineInRange("invokerFangsRange", 16, 0, 256);
+        BUILDER.pop();
+
+        BUILDER.push("Surrendered Spell");
+        SurrenderedCost = BUILDER.defineInRange("surrenderedCost", 16, 0, Integer.MAX_VALUE);
+        SurrenderedDuration = BUILDER.defineInRange("surrenderedDuration", 60, 0, 72000);
+        SurrenderedCoolDown = BUILDER.defineInRange("surrenderedCoolDown", 1200, 0, Integer.MAX_VALUE);
+        SurrenderedSummonDown = BUILDER.defineInRange("surrenderedSummonDown", 300, 0, 72000);
+        SurrenderedLimit = BUILDER.defineInRange("surrenderedLimit", 9, 1, Integer.MAX_VALUE);
+        SurrenderedBaseCount = BUILDER.defineInRange("surrenderedBaseCount", 3, 1, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Flying Magma Spell");
+        FlyingMagmaCost = BUILDER.defineInRange("flyingMagmaCost", 16, 0, Integer.MAX_VALUE);
+        FlyingMagmaDuration = BUILDER.defineInRange("flyingMagmaDuration", 30, 0, 72000);
+        FlyingMagmaCoolDown = BUILDER.defineInRange("flyingMagmaCoolDown", 100, 0, Integer.MAX_VALUE);
+        FlyingMagmaDirectDamage = BUILDER.defineInRange("flyingMagmaDirectDamage", 12.0, 0, Double.MAX_VALUE);
+        FlyingMagmaAreaDamage = BUILDER.defineInRange("flyingMagmaAreaDamage", 6.0, 0, Double.MAX_VALUE);
+        FlyingMagmaAreaRange = BUILDER.defineInRange("flyingMagmaAreaRange", 3.0, 0, 32.0);
+        FlyingMagmaRange = BUILDER.defineInRange("flyingMagmaRange", 16, 0, 256);
+        BUILDER.pop();
+
+        BUILDER.pop();
+
+        SPEC = BUILDER.build();
+    }
+
+    public static void loadConfig(ForgeConfigSpec config, String path) {
+        CommentedFileConfig file = CommentedFileConfig.builder(new File(path))
+                .sync()
+                .autosave()
+                .writingMode(WritingMode.REPLACE)
+                .build();
+        file.load();
+        config.setConfig(file);
+    }
+}
