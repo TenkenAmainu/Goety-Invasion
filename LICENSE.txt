@@ -1,0 +1,16 @@
+Goety & Invasion Custom License
+
+Copyright (c) 2026 TenkenAmainu. All Rights Reserved.
+
+Permission is hereby granted to:
+1. View, read, and learn from the source code for reference and educational purposes.
+2. Modify the source code solely for personal use, or to submit contributions (Pull Requests) to the official repository.
+3. Include this mod in modpacks using the official dependency system (CurseForge/Modrinth).
+
+The following actions are NOT permitted without prior written permission:
+1. Redistributing, reuploading, or publishing any direct copy of this mod (or its modified source code) as a separate public project.
+2. Using any assets from this project (textures, models, sounds) in other projects.
+
+All assets (textures, models, sounds, etc.) are All Rights Reserved (ARR).
+
+By submitting a Pull Request, you grant the author permission to use your contribution in this project.
