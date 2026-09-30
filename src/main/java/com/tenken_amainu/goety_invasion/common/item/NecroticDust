@@ -1,0 +1,17 @@
+package com.tenken_amainu.goety_invasion.common.item;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+public class NecroticDust extends Item {
+
+    public NecroticDust(Properties properties) {
+        super(properties
+                .stacksTo(64)
+                .fireResistant()
+        );
+    }
+}
