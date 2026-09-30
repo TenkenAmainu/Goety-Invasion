@@ -1,0 +1,50 @@
+{
+  "name": "Ominous Pyre Additions",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:goety_invasion/summons/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "New Illagers revealed.New Illagers subdued."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More info on Ominous Pyre $(l:goety:crafts/artifice/ominous_pyre)here$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Marauder Servant",
+      "text": "Requirements: $(li)Neollager $(li)2 Hay/Target Blocks $(li)32 Wooden Planks $(li)16 Wooden Fences $(li)2 Carved Pumpkins $(li)1 Crafting Table $(li)1 Furnace"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Alchemist Servant",
+      "text": "Requirements: $(li)Neollager $(li)2 Hay/Target Blocks $(li)16 Wooden Planks $(li)16 Wooden Fences $(li)2 Carved Pumpkins $(li)2 Fletching Table $(li)2 Brewing Stand $(li)1 Witch Pole"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Provoker Servant",
+      "text": "Requirements: $(li)Magic Neollager $(li)2 Hay/Target Blocks $(li)8 Bookshelves/Enchant Power $(li)16 Wooden Fences $(li)2 Carved Pumpkins $(li)10 Wools $(li)2 Banners"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Basher Servant",
+      "text": "Requirements: $(li)Vindicator Servant $(li)1 Smithing Table $(li)1 Furnace $(li)1 Crafting Table $(li)1 Blast Furnace $(li)3 Wooden Fences $(li)3 Carved Pumpkins $(li)1 Banner $(li)32 Bricks Block Any $(li)20 Walls"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Inquisitor Servant",
+      "text": "Requirements: $(li)Basher Servant $(li)1 Anvil $(li)1 Smithing Table $(li)2 Blast Furnaces $(li)3 Wooden Fences $(li)3 Carved Pumpkins $(li)2 Banners $(li)102 Bricks Block Any $(li)72 Walls $(li)15 Sands $(li)6 Magma Blocks $(li)10 Cactus $(li)16 Block of Pale Steel $(li)21 Chains"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Sorcerer Servant",
+      "text": "Requirements: $(li)Magic Neollager $(li)32 Bricks Block Any $(li)2 Fires $(li)8 Amethyst Blocks $(li)16 Bookshelves/Enchant Power $(li)10 Wools"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Firecaller Servant",
+      "text": "Requirements: $(li)Magic Neollager $(li)8 Magma Blocks $(li)9 Sugar Cane $(li)2 Blocks of Gold $(li)4 Carpets $(li)4 Dead Bushes $(li)32 Red Sand $(li)8 Hay Blocks"
+    }
+  ]
+}
