@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:vexing_focus"
+  },
+  "craftType": "animation",
+  "soulCost": 6,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": "illagerinvasion:primal_essence"
+    },
+    {
+      "item": "minecraft:skeleton_skull"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "tag": "forge:ender_pearls"
+    },
+    {
+      "item": "illagerinvasion:illusionary_dust"
+    },
+    {
+      "item": "illagerinvasion:illusionary_dust"
+    }
+  ],
+  "result": {
+    "item": "goety_invasion:surrendered_focus"
+  }
+}

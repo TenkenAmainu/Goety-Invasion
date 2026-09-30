@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:iron_hide_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 10,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety_invasion:necrotic_dust"
+    },
+    {
+      "item": "goety_invasion:necrotic_dust"
+    },
+    {
+      "item": "goety_invasion:necrotic_dust"
+    },
+    {
+      "tag": "minecraft:soul_fire_base_blocks"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:magic_emerald"
+    }
+  ],
+  "result": {
+    "item": "goety_invasion:ill_necromancer_shield_focus"
+  }
+}

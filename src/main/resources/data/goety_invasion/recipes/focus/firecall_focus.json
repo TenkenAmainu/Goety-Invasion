@@ -1,0 +1,24 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:smack_stone_focus"
+  },
+  "craftType": "geoturgy",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:magma_block"
+    },
+    {
+      "item": "minecraft:fire_charge"
+    },
+    {
+      "tag": "forge:sand/red"
+    }
+  ],
+  "result": {
+    "item": "goety_invasion:fire_call_focus"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:skull_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 6,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety_invasion:necrotic_dust"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "tag": "minecraft:soul_fire_base_blocks"
+    },
+    {
+      "item": "goety:ectoplasm"
+    }
+  ],
+  "result": {
+    "item": "goety_invasion:ill_necro_skull_focus"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:ghost_fire_focus"
+  },
+  "craftType": "magic",
+  "soulCost": 1,
+  "duration": 8,
+  "ingredients": [
+    {
+      "item": "illagerinvasion:magical_fire_charge"
+    },
+    {
+      "item": "minecraft:allium"
+    },
+    {
+      "item": "minecraft:allium"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "result": {
+    "item": "goety_invasion:magical_flames_focus"
+  }
+}
