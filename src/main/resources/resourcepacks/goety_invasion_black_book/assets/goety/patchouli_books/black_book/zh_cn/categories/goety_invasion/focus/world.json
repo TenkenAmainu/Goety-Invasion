@@ -1,0 +1,7 @@
+{
+  "name": "探索",
+  "description": "发掘刌民们的秘密。",
+  "icon": "goety_invasion:necrotic_dust",
+  "parent": "goety:goety_invasion/focus",
+  "sortnum": 3
+}
