@@ -1,0 +1,195 @@
+package com.tenken_amainu.goety_invasion.common.ai.goal;
+
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+
+public class AllyPotionBowAttackGoal<T extends Mob & RangedAttackMob> extends Goal {
+    private final T actor;
+    private final double speed;
+    private final int attackInterval;
+    private final float squaredRange;
+    private final float range;
+
+    @Nullable
+    private LivingEntity target;
+    private int targetSeeingTicker;
+    private int combatTicks = -1;
+    private boolean movingToLeft;
+    private boolean backward;
+    private int cooldown = -1;
+    private int updateCountdownTicks = -1;
+
+    public AllyPotionBowAttackGoal(T actor, double speed, int attackInterval, float range) {
+        this.actor = actor;
+        this.speed = speed;
+        this.attackInterval = attackInterval;
+        this.range = range;
+        this.squaredRange = range * range;
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+    }
+
+    @Override
+    public boolean canUse() {
+        LivingEntity target = this.actor.getTarget();
+        return target != null && this.isHoldingValidWeapon();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        LivingEntity target = this.actor.getTarget();
+        if (target == null) return false;
+        return (target.isAlive() && this.isHoldingValidWeapon()) || !this.actor.getNavigation().isDone();
+    }
+
+    private boolean isHoldingValidWeapon() {
+        ItemStack mainHand = this.actor.getMainHandItem();
+        return mainHand.is(Items.BOW) || mainHand.is(Items.LINGERING_POTION);
+    }
+
+    @Override
+    public void start() {
+        this.actor.setAggressive(true);
+        this.targetSeeingTicker = 0;
+        this.combatTicks = -1;
+        this.cooldown = -1;
+        this.updateCountdownTicks = -1;
+        this.movingToLeft = false;
+        this.backward = false;
+    }
+
+    @Override
+    public void stop() {
+        this.actor.setAggressive(false);
+        this.targetSeeingTicker = 0;
+        this.cooldown = -1;
+        this.actor.stopUsingItem();
+    }
+
+    @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
+    public void tick() {
+        LivingEntity target = this.actor.getTarget();
+        if (target == null) return;
+
+        ItemStack mainHand = this.actor.getMainHandItem();
+        if (mainHand.is(Items.LINGERING_POTION)) {
+            this.tickPotionMode(target);
+        } else if (mainHand.is(Items.BOW)) {
+            this.tickBowMode(target);
+        }
+    }
+
+    private void tickPotionMode(LivingEntity target) {
+        double distanceSq = this.actor.distanceToSqr(target);
+        double distance = Math.sqrt(distanceSq);
+        boolean hasLineOfSight = this.actor.getSensing().hasLineOfSight(target);
+
+        if (hasLineOfSight) {
+            this.targetSeeingTicker++;
+        } else {
+            this.targetSeeingTicker = 0;
+        }
+
+        if (distanceSq > this.squaredRange || this.targetSeeingTicker < 5) {
+            this.actor.getNavigation().moveTo(target, this.speed);
+        } else {
+            this.actor.getNavigation().stop();
+        }
+
+        this.actor.getLookControl().setLookAt(target, 30.0F, 30.0F);
+
+        if (this.updateCountdownTicks == 0) {
+            if (hasLineOfSight) {
+                float progress = Mth.clamp((float) distance / this.range, 0.1F, 1.0F);
+                this.actor.performRangedAttack(target, progress);
+                this.updateCountdownTicks = Mth.floor(Mth.lerp(progress, this.attackInterval, this.attackInterval));
+            }
+        } else if (this.updateCountdownTicks < 0) {
+            float progress = Mth.clamp((float) distance / this.range, 0.1F, 1.0F);
+            this.updateCountdownTicks = Mth.floor(Mth.lerp(progress, this.attackInterval, this.attackInterval));
+        } else {
+            this.updateCountdownTicks--;
+        }
+    }
+
+    private void tickBowMode(LivingEntity target) {
+        double distanceSq = this.actor.distanceToSqr(target);
+        boolean hasLineOfSight = this.actor.getSensing().hasLineOfSight(target);
+
+        if (hasLineOfSight != (this.targetSeeingTicker > 0)) {
+            this.targetSeeingTicker = 0;
+        }
+        if (hasLineOfSight) {
+            this.targetSeeingTicker++;
+        } else {
+            this.targetSeeingTicker--;
+        }
+
+        if (distanceSq > this.squaredRange || this.targetSeeingTicker < 20) {
+            this.actor.getNavigation().moveTo(target, this.speed);
+            this.combatTicks = -1;
+        } else {
+            this.actor.getNavigation().stop();
+            this.combatTicks++;
+
+            if (this.combatTicks >= 20) {
+                if (this.actor.getRandom().nextFloat() < 0.3F) {
+                    this.movingToLeft = !this.movingToLeft;
+                }
+                if (this.actor.getRandom().nextFloat() < 0.3F) {
+                    this.backward = !this.backward;
+                }
+                this.combatTicks = 0;
+            }
+
+            if (distanceSq > this.squaredRange * 0.75F) {
+                this.backward = false;
+            } else if (distanceSq < this.squaredRange * 0.25F) {
+                this.backward = true;
+            }
+
+            float forward = this.backward ? -0.5F : 0.5F;
+            float strafe = this.movingToLeft ? 0.5F : -0.5F;
+            this.actor.getMoveControl().strafe(forward, strafe);
+            this.actor.lookAt(target, 30.0F, 30.0F);
+        }
+
+        if (this.combatTicks <= -1) {
+            this.actor.getLookControl().setLookAt(target, 30.0F, 30.0F);
+        }
+
+        if (this.actor.isUsingItem()) {
+            if (!hasLineOfSight && this.targetSeeingTicker < -60) {
+                this.actor.stopUsingItem();
+            } else {
+                int usingTime = this.actor.getTicksUsingItem();
+                if (usingTime >= 20) {
+                    this.actor.stopUsingItem();
+                    this.actor.performRangedAttack(target, BowItem.getPowerForTime(usingTime));
+                    this.cooldown = this.attackInterval;
+                }
+            }
+        } else {
+            if (this.cooldown > 0) {
+                this.cooldown--;
+            }
+            if (this.cooldown <= 0 && this.targetSeeingTicker >= -60) {
+                this.actor.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.actor, Items.BOW));
+            }
+        }
+    }
+}
