@@ -1,0 +1,56 @@
+{
+  "item.goety_invasion.logo": "Logo",
+  "item.goety_invasion.ill_necro_soul_jar": "Soul Jar",
+  "item.goety_invasion.necrotic_dust": "Necrotic Dust",
+
+  "item.goety_invasion.magical_flames_focus": "Magical Flames Focus",
+  "item.goety_invasion.magical_flames_focus.info": "Summon MagicalFlames burn the enemy",
+  "item.goety_invasion.invoker_fangs_focus": "Invoke Fangs Focus",
+  "item.goety_invasion.invoker_fangs_focus.info": "Summon stronger fangs in multiple forms. They bite enemies and knock them back",
+  "item.goety_invasion.surrendered_focus": "Surrendered Focus",
+  "item.goety_invasion.surrendered_focus.info": "Summon Surrendered and them will fight for you",
+  "item.goety_invasion.ill_necro_skull_focus": "Necro Skull Focus",
+  "item.goety_invasion.ill_necro_skull_focus.info": "Summon the Necro Skull to empower allied undead or weaken and damage enemies",
+  "item.goety_invasion.ill_necromancer_shield_focus": "Necro Shield Focus",
+  "item.goety_invasion.ill_necromancer_shield_focus.info": "Let the nearby undead guard you",
+  "item.goety_invasion.fire_call_focus": "Fire Call Focus",
+  "item.goety_invasion.fire_call_focus.info": "Call flying magma block to bombard enemy",
+
+  "item.goety_invasion.ally_surrendered_spawn_egg": "Surrendered Servant Spawn Egg",
+  "item.goety_invasion.marauder_servant_spawn_egg": "Marauder Servant Spawn Egg",
+  "item.goety_invasion.inquisitor_servant_spawn_egg": "Inquisitor Servant Spawn Egg",
+  "item.goety_invasion.provoker_servant_spawn_egg": "Provoker Servant Spawn Egg",
+  "item.goety_invasion.basher_servant_spawn_egg": "Basher Servant Spawn Egg",
+  "item.goety_invasion.alchemist_servant_spawn_egg": "Alchemist Servant Spawn Egg",
+  "item.goety_invasion.bound_invoker_spawn_egg": "Bound Invoker Spawn Egg",
+  "item.goety_invasion.bound_sorcerer_spawn_egg": "Bound Sorcerer Spawn Egg",
+  "item.goety_invasion.sorcerer_servant_spawn_egg": "Sorcerer Servant Spawn Egg",
+  "item.goety_invasion.necromancer_servant_spawn_egg": "Necromancer Servant Spawn Egg",
+  "item.goety_invasion.firecaller_servant_spawn_egg": "Firecaller Servant Spawn Egg",
+  "item.goety_invasion.bound_firecaller_spawn_egg": "Bound Firecaller Spawn Egg",
+
+  "entity.goety_invasion.ally_surrendered": "Surrendered",
+  "entity.goety_invasion.marauder_servant": "Marauder Servant",
+  "entity.goety_invasion.inquisitor_servant": "Inquisitor Servant",
+  "entity.goety_invasion.provoker_servant": "Provoker Servant",
+  "entity.goety_invasion.basher_servant": "Basher Servant",
+  "entity.goety_invasion.alchemist_servant": "Alchemist Servant",
+  "entity.goety_invasion.bound_invoker": "Bound Invoker",
+  "entity.goety_invasion.bound_sorcerer": "Bound Sorcerer",
+  "entity.goety_invasion.sorcerer_servant": "Sorcerer Servant",
+  "entity.goety_invasion.necromancer_servant": "Necromancer Servant",
+  "entity.goety_invasion.firecaller_servant": "Firecaller Servant",
+  "entity.goety_invasion.bound_firecaller": "Bound Firecaller",
+
+  "entity.goety_invasion.ally_flying_magma": "Magma Charge",
+  "entity.goety_invasion.ally_necro_skull_bolt": "Necro Skull Bolt",
+  "entity.goety_invasion.ally_skull_bolt": "Skull Bolt",
+
+  "message.goety_invasion.inquisitor_servant.shield_broken": "Shield is broken, please give a new shield directly.",
+  "message.goety_invasion.inquisitor_servant.shield_full": "Shield is already at full durability, no need to repair.",
+  "message.goety_invasion.inquisitor_servant.has_shield": "Servant already has a shield, please repair with planks first.",
+
+  "block.goety_invasion.ally_magic_fire": "Magical Fire",
+
+  "effect.goety_invasion.necromancer_shield": "Necromancer Shield"
+}
