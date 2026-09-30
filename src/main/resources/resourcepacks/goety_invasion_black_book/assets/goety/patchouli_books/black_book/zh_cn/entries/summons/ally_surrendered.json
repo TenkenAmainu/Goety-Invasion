@@ -1,0 +1,16 @@
+{
+  "name": "亡骨役奴仆从",
+  "icon": "minecraft:skeleton_skull",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "祈灵师的巫术力量绑定并控制着他那些可悲的受害者们。这些看上去像是恼鬼和骷髅之间的生物可能和折磨共享一些制造上的相似之处，无论如何你已经想到了一种办法来无情地绑定它们。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:ally_surrendered",
+      "text": "请给予我们解脱..."
+    }
+  ]
+}

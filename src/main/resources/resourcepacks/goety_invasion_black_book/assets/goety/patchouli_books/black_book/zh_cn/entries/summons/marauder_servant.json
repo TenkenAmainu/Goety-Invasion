@@ -1,0 +1,16 @@
+{
+  "name": "掳掠者仆从",
+  "icon": "illagerinvasion:platinum_infused_hatchet",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些擅长投掷铂金短柄斧的灾厄村民在灾厄村民群体中的地位和掠夺者接近，你已经想到了一种方法将你的新刌民训练成服从于你的飞斧投手们。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:marauder_servant",
+      "text": "灰旋风"
+    }
+  ]
+}

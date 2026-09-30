@@ -1,0 +1,28 @@
+{
+  "name": "被绑定的唤火者",
+  "icon": "minecraft:fire_charge",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "唤火者的遗物，便是那枚烈焰弹。它并非取自下界的造物，而是他独自在主世界的深处钻研地壳与火焰之理所凝成的心血。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_firecaller"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "他是一位年迈的地卜师，隐居于红沙沙漠之中，远离宫廷与喧嚣。如今他的灵魂也被束缚，曾经唤起的地火，如今听命于你。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_firecaller",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像其它被绑定的灾厄村民一样，它可以不受重力影响地在地面上飘浮，尽管它看上去像是灵体，但它并没有穿墙能力且仍会被常规武器伤害到，手持灵质右键可以治疗它"
+    }
+  ]
+}

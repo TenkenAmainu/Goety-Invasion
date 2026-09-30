@@ -1,0 +1,28 @@
+{
+  "name": "被绑定的祈灵师",
+  "icon": "illagerinvasion:primal_essence",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "始源精华封存着祈灵师的本源心血与残存灵息。这股精纯的本源之力能突破常规附魔的桎梏，大幅提升武器的附魔等级与效力。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_invoker"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "好吧，你不愿让祈灵师的灵息就此消散，于是决意重塑其灵魂，将他再度唤回世间……这样一来，你就不必再在府邸里到处找他了。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_invoker",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像其它被绑定的灾厄村民一样，它可以不受重力影响地在地面上飘浮，尽管它看上去像是灵体，但它并没有穿墙能力且仍会被常规武器伤害到，手持灵质右键可以治疗它"
+    }
+  ]
+}

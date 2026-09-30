@@ -1,0 +1,16 @@
+{
+  "name": "唤火者仆从",
+  "icon": "goety_invasion:fire_call_focus",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些唤火者曾是钻研地壳与火焰之道的灾厄地卜师，他们能将凝炼的烈焰弹掷向敌人，命中后炸开一片焦土，将周围的生物一并掀飞。小心别被自己的仆从烤熟了。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:firecaller_servant",
+      "text": "我看你是想要个半熟"
+    }
+  ]
+}

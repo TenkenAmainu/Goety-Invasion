@@ -1,0 +1,16 @@
+{
+  "name": "不祥术士仆从",
+  "icon": "goety_invasion:magical_flames_focus",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些术士和尝试掌握所有魔法的巫师们不同，他们擅长用巫术之火烧死敌人。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:sorcerer_servant",
+      "text": "别盯着那顶帽子看伙计，里边什么也没有，和你的脑子一样"
+    }
+  ]
+}

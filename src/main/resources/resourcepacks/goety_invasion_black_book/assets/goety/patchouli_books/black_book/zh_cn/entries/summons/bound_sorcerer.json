@@ -1,0 +1,28 @@
+{
+  "name": "被绑定的不祥术士",
+  "icon": "illagerinvasion:unusual_dust",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "奇异之尘并非寻常的施法残余，而是不祥术士毕生最独有的黑魔法研究成果。他将自己的灵魂与这捧尘灰相系，纵使身死，也能凭此再度归来。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:thrall/summon_bound_sorcerer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "他是刌民之中少见的小贵族，会随劫掠队伍一同出征，身旁常有一位卫道士作近卫随行。如今他的灵魂被束缚于尘灰之上，再度为你所用。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:bound_sorcerer",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像其它被绑定的灾厄村民一样，它可以不受重力影响地在地面上飘浮，尽管它看上去像是灵体，但它并没有穿墙能力且仍会被常规武器伤害到，手持灵质右键可以治疗它"
+    }
+  ]
+}

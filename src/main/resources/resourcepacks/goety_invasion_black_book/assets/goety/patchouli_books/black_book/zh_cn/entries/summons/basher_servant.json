@@ -1,0 +1,16 @@
+{
+  "name": "猛击者仆从",
+  "icon": "minecraft:shield",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你设法从卫道士中训练出了一种擅长使用盾牌的新型战士，他们会先使用盾牌反弹弹射物并猛击生物，在盾牌破碎后他们会手持斧头像卫道士一样发动迅猛的攻击。需要注意的是他们的盾牌破碎时他们会陷入短暂的眩晕状态。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:basher_servant",
+      "text": "刀盾！"
+    }
+  ]
+}

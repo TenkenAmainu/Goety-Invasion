@@ -1,0 +1,16 @@
+{
+  "name": "挑衅者仆从",
+  "icon": "minecraft:target",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这种具有魔法资质的灾厄村民却并不以魔法作为攻击手段，他们使用弓箭作战，并且每隔一段时间就会施法为周围的盟友施加力量和速度效果。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:provoker_servant",
+      "text": "指定没有你好果汁吃噢你记住"
+    }
+  ]
+}

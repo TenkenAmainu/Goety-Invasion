@@ -1,0 +1,28 @@
+{
+  "name": "灾厄死灵法师",
+  "icon": "goety_invasion:necrotic_dust",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过仪式启迪你的黑魔法初学者们，你创造出一种灾厄村民类型的死灵法师，虽然他们并不是亡灵，却比那些骷髅架子更懂得如何施展死灵术的奥秘。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety_invasion:convert_evoker_to_necromancer"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:necromancer_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像其他亡灵死灵法师一样，你的刌民死灵法师可以接受更多的死灵聚晶。如果他们获得了一个暗夜之心，那么他们抛射的头颅也会获得强化。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当然，作为一种死灵法师，喂食同类的灵魂罐可以让他们强化。然而需要注意的是你的死灵法师仆从仍是活的生物，只有当你的死灵法师在被不祥神像复活后处于脆弱期间时死亡，他们才会返还灵魂罐。"
+    }
+  ]
+}

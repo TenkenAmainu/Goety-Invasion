@@ -1,0 +1,16 @@
+{
+  "name": "裁决者仆从",
+  "icon": "goety:pale_steel_block",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "真正的百战老兵！猛击者需要经历大量的训练才能被提拔为一名裁决者。他们挥舞着石剑和盾牌，拥有极其强大的力量和无与伦比的坚韧。在他们的盾牌被摧毁之前，他们拥有着老兵应有的冷静和沉着；当敌人摧毁了他们手中象征着荣誉的盾牌之后，他们将会重新展现出本能中的凶猛蛮勇！"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:inquisitor_servant",
+      "text": "当我年轻的时候还没有这道伤疤..."
+    }
+  ]
+}

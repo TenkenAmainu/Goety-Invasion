@@ -1,0 +1,16 @@
+{
+  "name": "炼金术士仆从",
+  "icon": "minecraft:splash_potion",
+  "category": "goety:goety_invasion/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "灾厄村民中的神秘炼金术士能够使用多种负面药水削弱生物，再凭借精湛的箭术射杀他们。他们的加入会成为你的灾厄村民部落中的一股不可小觑的力量。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goety_invasion:alchemist_servant",
+      "text": "他其实是个cosplay爱好者"
+    }
+  ]
+}
