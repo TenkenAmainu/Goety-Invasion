@@ -1,0 +1,89 @@
+package com.tenken_amainu.goety_invasion;
+
+import com.Polarice3.Goety.client.render.model.IllagerServantModel;
+import com.tenken_amainu.goety_invasion.client.model.*;
+import com.tenken_amainu.goety_invasion.client.renderer.entity.*;
+import com.tenken_amainu.goety_invasion.client.renderer.entity.layers.NecromancerShieldPlayerLayer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Map;
+
+@Mod.EventBusSubscriber(modid = GINMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class GIN_CMod {
+
+    public static final DeferredRegister<ParticleType<?>> PARTICLE =
+            DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, GINMod.MODID);
+
+    public static final ModelLayerLocation BOUND_INVOKER_LAYER = location("bound_invoker");
+    public static final ModelLayerLocation ALCHEMIST_SERVANT_LAYER = location("alchemist_servant");
+    public static final ModelLayerLocation SORCERER_SERVANT_LAYER = location("sorcerer_servant");
+    public static final ModelLayerLocation NECROMANCER_SERVANT_SHIELD = location("necromancer_servant_shield");
+    public static final ModelLayerLocation FIRE_CALLER_SERVANT = location("firecaller_servant");
+    public static final ModelLayerLocation BOUND_FIRE_CALLER = location("bound_firecaller");
+    public static final ModelLayerLocation BOUND_SORCERER = location("bound_sorcerer");
+    public static final ModelLayerLocation ARMORED_ILLAGER_SERVANT = location("armored_illager_servant");
+
+    private static ModelLayerLocation location(String path) {
+        return new ModelLayerLocation(new ResourceLocation(GINMod.MODID, path), "main");
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(BOUND_INVOKER_LAYER, BoundInvokerModel::createBodyLayer);
+        event.registerLayerDefinition(ALCHEMIST_SERVANT_LAYER, AlchemistServantModel::createBodyLayer);
+        event.registerLayerDefinition(SORCERER_SERVANT_LAYER, HatIllagerServantModel::createBodyLayer);
+        event.registerLayerDefinition(NECROMANCER_SERVANT_SHIELD, IllagerServantModel::createBodyLayer);
+        event.registerLayerDefinition(FIRE_CALLER_SERVANT, FireCallerServantModel::createBodyLayer);
+        event.registerLayerDefinition(BOUND_FIRE_CALLER, BoundFireCallerModel::createBodyLayer);
+        event.registerLayerDefinition(BOUND_SORCERER, BoundSorcererModel::createBodyLayer);
+        event.registerLayerDefinition(ARMORED_ILLAGER_SERVANT, ArmoredIllagerServantModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(GINMod.MARAUDER_SERVANT.get(), MarauderServantRenderer::new);
+        event.registerEntityRenderer(GINMod.INQUISITOR_SERVANT.get(), InquisitorServantRenderer::new);
+        event.registerEntityRenderer(GINMod.PROVOKER_SERVANT.get(), ProvokerServantRenderer::new);
+        event.registerEntityRenderer(GINMod.BASHER_SERVANT.get(), BasherServantRenderer::new);
+        event.registerEntityRenderer(GINMod.BOUND_INVOKER.get(), BoundInvokerRenderer::new);
+        event.registerEntityRenderer(GINMod.ALCHEMIST_SERVANT.get(), AlchemistServantRender::new);
+        event.registerEntityRenderer(GINMod.ALLY_SKULL_BOLT.get(), AllySkullBoltRender::new);
+        event.registerEntityRenderer(GINMod.SORCERER_SERVANT.get(), SorcererServantRenderer::new);
+        event.registerEntityRenderer(GINMod.ALLY_NECRO_SKULL_BOLT_ENTITY_TYPE.get(), AllyNecroSkullBoltRenderer::new);
+        event.registerEntityRenderer(GINMod.NECROMANCER_SERVANT.get(), NecromancerServantRenderer::new);
+        event.registerEntityRenderer(GINMod.ALLY_FLYING_MAGMA.get(), AllyFlyingMagmaRenderer::new);
+        event.registerEntityRenderer(GINMod.FIRECALLER_SERVANT.get(), FireCallerServantRenderer::new);
+        event.registerEntityRenderer(GINMod.BOUND_FIRECALLER.get(), BoundFireCallerRenderer::new);
+        event.registerEntityRenderer(GINMod.BOUND_SORCERER.get(), BoundSorcererRenderer::new);
+        event.registerEntityRenderer(GINMod.ALLY_SURRENDERED.get(), AllySurrenderedRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
+        Minecraft mc = Minecraft.getInstance();
+        Map<String, EntityRenderer<? extends Player>> skinMap = mc.getEntityRenderDispatcher().getSkinMap();
+
+        for (Map.Entry<String, EntityRenderer<? extends Player>> entry : skinMap.entrySet()) {
+            if (!(entry.getValue() instanceof PlayerRenderer playerRenderer)) continue;
+            boolean slim = !"default".equals(entry.getKey());
+            PlayerModel<AbstractClientPlayer> model = new PlayerModel<>(
+                    event.getEntityModels().bakeLayer(slim ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), slim);
+            playerRenderer.addLayer(new NecromancerShieldPlayerLayer(playerRenderer, model));
+        }
+    }
+}
