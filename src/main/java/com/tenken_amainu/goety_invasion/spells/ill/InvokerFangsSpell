@@ -1,0 +1,195 @@
+package com.tenken_amainu.goety_invasion.spells.ill;
+
+import com.Polarice3.Goety.api.magic.SpellType;
+import com.Polarice3.Goety.common.enchantments.ModEnchantments;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.magic.Spell;
+import com.Polarice3.Goety.common.magic.SpellStat;
+import com.Polarice3.Goety.utils.WandUtil;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllyInvokerFangs;
+import com.tenken_amainu.goety_invasion.config.GINSpellConfig;
+import fuzs.illagerinvasion.init.ModRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.List;
+
+public class InvokerFangsSpell extends Spell {
+
+    @Override
+    public SpellStat defaultStats() {
+        return super.defaultStats().setRange(GINSpellConfig.InvokerFangsRange.get());
+    }
+
+    @Override public int defaultSoulCost() { return GINSpellConfig.InvokerFangsCost.get(); }
+    @Override public int defaultCastDuration() { return GINSpellConfig.InvokerFangsDuration.get(); }
+    @Override public SoundEvent CastingSound() { return ModRegistry.SORCERER_CAST_SOUND_EVENT.get(); }
+    @Override public int defaultSpellCooldown() { return GINSpellConfig.InvokerFangsCoolDown.get(); }
+    @Override public SpellType getSpellType() { return SpellType.ILL; }
+
+    @Override
+    public List<Enchantment> acceptedEnchantments() {
+        return List.of(ModEnchantments.POTENCY.get(), ModEnchantments.RANGE.get(), ModEnchantments.BURNING.get());
+    }
+
+    @Override
+    public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+        if (!caster.isAlive()) return;
+
+        int range = spellStat.getRange();
+        int potency = spellStat.getPotency();
+        int burning = spellStat.getBurning();
+        double radius = spellStat.getRadius();
+
+        if (WandUtil.enchantedFocus(caster)) {
+            potency += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);
+            range += WandUtil.getLevels(ModEnchantments.RANGE.get(), caster);
+            burning += WandUtil.getLevels(ModEnchantments.BURNING.get(), caster);
+        }
+
+        float extraDamage = potency * 2.0F;
+
+        for (int i = 0; i < 20; i++) {
+            worldIn.sendParticles(ParticleTypes.SMOKE,
+                    caster.getX() + (worldIn.random.nextDouble() - 0.5) * 2,
+                    caster.getY() + worldIn.random.nextDouble() * 2,
+                    caster.getZ() + (worldIn.random.nextDouble() - 0.5) * 2,
+                    1, 0, 0, 0, 0);
+        }
+        worldIn.playSound(null, caster.blockPosition(),
+                ModRegistry.INVOKER_FANGS_CAST_SOUND_EVENT.get(),
+                caster.getSoundSource(), 1.0F, 0.8F + worldIn.random.nextFloat() * 0.4F);
+
+        if (isShifting(caster)) {
+            castSneakModeFangs(worldIn, caster, range, extraDamage, burning, staff);
+            return;
+        }
+
+        double minY = caster.getY();
+        double maxY = caster.getY() + 1.0;
+        float yaw = caster.getYRot() * ((float) Math.PI / 180.0F);
+
+        LivingEntity target = getTarget(caster, range);
+        if (target != null) {
+            minY = Math.min(target.getY(), caster.getY());
+            maxY = Math.max(target.getY(), caster.getY()) + 1.0;
+            yaw = (float) Mth.atan2(target.getZ() - caster.getZ(), target.getX() - caster.getX());
+        } else {
+            Vec3 hit = rayTrace(worldIn, caster, range, radius).getLocation();
+            minY = Math.min(hit.y, caster.getY());
+            maxY = Math.max(hit.y, caster.getY()) + 1.0;
+            yaw = (float) Mth.atan2(hit.z - caster.getZ(), hit.x - caster.getX());
+        }
+
+        castLinearFangs(worldIn, caster, range, extraDamage, burning, staff, yaw, minY, maxY);
+    }
+
+    private void castLinearFangs(ServerLevel worldIn, LivingEntity caster,
+                                 int range, float extraDamage, int burning, ItemStack staff,
+                                 float yaw, double minY, double maxY) {
+        for (int i = 0; i < range; ++i) {
+            double distance = 1.25 * (i + 1);
+            conjureFang(worldIn,
+                    caster.getX() + Mth.cos(yaw) * distance,
+                    caster.getZ() + Mth.sin(yaw) * distance,
+                    maxY, minY, yaw, i, caster, extraDamage, burning);
+        }
+
+        if (!rightStaff(staff)) return;
+
+        float leftYaw = yaw + 0.2F;
+        float rightYaw = yaw - 0.2F;
+        for (int i = 0; i < range; ++i) {
+            double distance = 1.25 * (i + 1);
+            conjureFang(worldIn,
+                    caster.getX() + Mth.cos(leftYaw) * distance,
+                    caster.getZ() + Mth.sin(leftYaw) * distance,
+                    maxY, minY, leftYaw, i, caster, extraDamage, burning);
+            conjureFang(worldIn,
+                    caster.getX() + Mth.cos(rightYaw) * distance,
+                    caster.getZ() + Mth.sin(rightYaw) * distance,
+                    maxY, minY, rightYaw, i, caster, extraDamage, burning);
+        }
+    }
+
+    private void castSneakModeFangs(ServerLevel worldIn, LivingEntity caster,
+                                    int range, float extraDamage, int burning, ItemStack staff) {
+        List<LivingEntity> targets = worldIn.getEntitiesOfClass(LivingEntity.class,
+                caster.getBoundingBox().inflate(range),
+                entity -> entity != caster
+                        && !entity.isAlliedTo(caster)
+                        && !(entity instanceof Summoned));
+
+        boolean useRightStaff = rightStaff(staff);
+
+        for (LivingEntity target : targets) {
+            double minY = Math.min(target.getY(), caster.getY());
+            double maxY = Math.max(target.getY(), caster.getY()) + 1.0;
+            float yaw = (float) Mth.atan2(target.getZ() - caster.getZ(), target.getX() - caster.getX());
+
+            for (int i = 0; i < 5; ++i) {
+                float angle = yaw + i * ((float) Math.PI * 0.4f);
+                conjureFang(worldIn,
+                        target.getX() + Mth.cos(angle) * 1.5,
+                        target.getZ() + Mth.sin(angle) * 1.5,
+                        maxY, minY, angle, 0, caster, extraDamage, burning);
+            }
+
+            if (!useRightStaff) continue;
+
+            for (int i = 0; i < 8; ++i) {
+                float angle = yaw + i * ((float) Math.PI * 2.0f / 8.0f) + 1.2566371f;
+                conjureFang(worldIn,
+                        target.getX() + Mth.cos(angle) * 2.5,
+                        target.getZ() + Mth.sin(angle) * 2.5,
+                        maxY, minY, angle, 3, caster, extraDamage, burning);
+            }
+        }
+    }
+
+    private void conjureFang(ServerLevel worldIn, double x, double z, double maxY, double y,
+                             float yaw, int warmup, LivingEntity caster, float extraDamage, int burning) {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, Mth.floor(maxY), z);
+        boolean foundSurface = false;
+        double surfaceY = 0.0;
+
+        while (mutablePos.getY() >= Mth.floor(y)) {
+            BlockPos below = mutablePos.below();
+            BlockState belowState = worldIn.getBlockState(below);
+            if (belowState.isFaceSturdy(worldIn, below, Direction.UP)) {
+                BlockState current = worldIn.getBlockState(mutablePos);
+                if (!current.isAir()) {
+                    VoxelShape shape = current.getCollisionShape(worldIn, mutablePos);
+                    if (!shape.isEmpty()) {
+                        surfaceY = shape.max(Direction.Axis.Y);
+                    }
+                }
+                foundSurface = true;
+                break;
+            }
+            mutablePos.move(Direction.DOWN);
+        }
+
+        if (!foundSurface) return;
+
+        AllyInvokerFangs fangs = new AllyInvokerFangs(
+                worldIn, x, mutablePos.getY() + 0.2 + surfaceY, z,
+                yaw, warmup, caster, 10.0F + extraDamage);
+        if (burning > 0) {
+            fangs.setRemainingFireTicks(burning * 20);
+        }
+        worldIn.addFreshEntity(fangs);
+    }
+}
