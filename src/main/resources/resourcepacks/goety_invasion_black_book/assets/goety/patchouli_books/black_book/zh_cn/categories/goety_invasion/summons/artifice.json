@@ -1,0 +1,7 @@
+{
+  "name": "设备",
+  "description": "策划野心磅礴的阴谋",
+  "icon": "goety:ominous_pyre",
+  "parent": "goety:goety_invasion/summons",
+  "sortnum": 3
+}
