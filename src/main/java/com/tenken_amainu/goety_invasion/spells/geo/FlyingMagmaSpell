@@ -1,0 +1,93 @@
+package com.tenken_amainu.goety_invasion.spells.geo;
+
+import com.Polarice3.Goety.api.magic.SpellType;
+import com.Polarice3.Goety.common.enchantments.ModEnchantments;
+import com.Polarice3.Goety.common.magic.Spell;
+import com.Polarice3.Goety.common.magic.SpellStat;
+import com.Polarice3.Goety.utils.WandUtil;
+import com.tenken_amainu.goety_invasion.common.entities.projectiles.AllyFlyingMagma;
+import com.tenken_amainu.goety_invasion.config.GINSpellConfig;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+
+public class FlyingMagmaSpell extends Spell {
+
+    @Override
+    public int defaultSoulCost() {
+        return GINSpellConfig.FlyingMagmaCost.get();
+    }
+
+    @Override
+    public int defaultCastDuration() {
+        return GINSpellConfig.FlyingMagmaDuration.get();
+    }
+
+    @Override
+    public int defaultSpellCooldown() {
+        return GINSpellConfig.FlyingMagmaCoolDown.get();
+    }
+
+    @Override
+    public SoundEvent CastingSound(LivingEntity caster) {
+        return SoundEvents.FIRECHARGE_USE;
+    }
+
+    @Override
+    public SpellType getSpellType() {
+        return SpellType.GEOMANCY;
+    }
+
+    @Override
+    public List<Enchantment> acceptedEnchantments() {
+        return List.of(ModEnchantments.POTENCY.get(), ModEnchantments.BURNING.get());
+    }
+
+    @Override
+    public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+        int potency = spellStat.getPotency();
+        int burning = spellStat.getBurning();
+
+        if (WandUtil.enchantedFocus(caster)) {
+            potency += WandUtil.getPotencyLevel(caster);
+            burning += WandUtil.getLevels(ModEnchantments.BURNING.get(), caster);
+        }
+
+        Vec3 view = caster.getViewVector(1.0F);
+        double x = caster.getX();
+        double y = caster.getY() + 2.5D;
+        double z = caster.getZ();
+
+        shootMagma(worldIn, caster, x, y, z, view.x, view.y, view.z, potency, burning);
+
+        if (rightStaff(staff)) {
+            for (int k = 0; k < 2; ++k) {
+                shootMagma(worldIn, caster, x, y, z,
+                        view.x + worldIn.getRandom().nextGaussian() * 0.05D,
+                        view.y + worldIn.getRandom().nextGaussian() * 0.05D,
+                        view.z + worldIn.getRandom().nextGaussian() * 0.05D,
+                        potency, burning);
+            }
+        }
+
+        playSound(worldIn, caster, SoundEvents.BLAZE_SHOOT, 1.0F, projPitch(worldIn.getRandom()));
+    }
+
+    private void shootMagma(ServerLevel worldIn, LivingEntity caster,
+                            double x, double y, double z,
+                            double dx, double dy, double dz,
+                            int potency, int burning) {
+        AllyFlyingMagma magma = new AllyFlyingMagma(worldIn, caster, dx, dy, dz);
+        magma.setOwner(caster);
+        magma.setExtraDamage(potency);
+        magma.setBurning(burning);
+        magma.setPosRaw(x, y, z);
+        worldIn.addFreshEntity(magma);
+    }
+}
