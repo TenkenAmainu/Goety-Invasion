@@ -1,6 +1,7 @@
 package com.tenken_amainu.goety_invasion.common.entities.ally.illager;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.tenken_amainu.goety_invasion.common.ai.goal.ServantHatchetAttackGoal;
 import com.tenken_amainu.goety_invasion.config.GINServantConfig;
 import fuzs.illagerinvasion.init.ModRegistry;
@@ -45,10 +46,17 @@ public class MarauderServant extends AbstractIllagerServant implements RangedAtt
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, GINServantConfig.MarauderServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.MarauderServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, GINServantConfig.MarauderServantAttackDamage.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.MarauderServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, 24.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 1.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
+    }
+
+    public void setConfigurableAttributes() {
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.MarauderServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.MarauderServantMovementSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), GINServantConfig.MarauderServantAttackDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.MarauderServantFollowRange.get());
     }
 
     @Override
@@ -81,7 +89,20 @@ public class MarauderServant extends AbstractIllagerServant implements RangedAtt
                                         @Nullable CompoundTag entityNbt) {
         this.setItemSlot(EquipmentSlot.MAINHAND,
                 new ItemStack(ModRegistry.PLATINUM_INFUSED_HATCHET_ITEM.get()));
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
+        super.readAdditionalSaveData(nbt);
     }
 
     @Override
