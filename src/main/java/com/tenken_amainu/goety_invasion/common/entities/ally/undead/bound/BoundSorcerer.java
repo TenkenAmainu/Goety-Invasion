@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -37,17 +39,32 @@ public class BoundSorcerer extends AbstractBoundIllager {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.BoundSorcererMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, GINServantConfig.BoundSorcererFlyingSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.BoundSorcererFollowRange.get())
-                .add(Attributes.ARMOR, GINServantConfig.BoundSorcererArmor.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.BoundSorcererHealth.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.38D)
+                .add(Attributes.FLYING_SPEED, 0.15D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.MAX_HEALTH, 32.0D);
     }
 
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.BoundSorcererHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.BoundSorcererArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.BoundSorcererFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.BoundSorcererMovementSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FLYING_SPEED), GINServantConfig.BoundSorcererFlyingSpeed.get());
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
+                                        @Nullable CompoundTag entityNbt) {
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
     }
 
     public enum BoundSorcererSpell {
@@ -156,6 +173,9 @@ public class BoundSorcerer extends AbstractBoundIllager {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(tag);
         this.castTeleportCooldown = tag.getInt("CastTeleportCooldown");
         this.conjureFlamesCooldown = tag.getInt("ConjureFlamesCooldown");
