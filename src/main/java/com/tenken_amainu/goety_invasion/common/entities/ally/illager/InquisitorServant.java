@@ -81,23 +81,27 @@ public class InquisitorServant extends AbstractIllagerServant {
         super(entityType, world);
         this.xpReward = 25;
         this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
-        this.shieldBlockLimit = GINServantConfig.InquisitorShieldBlockLimit.get();
-        this.stunTick = GINServantConfig.InquisitorStunDuration.get();
+        this.shieldBlockLimit = 5;   
+        this.stunTick = 40;          
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.InquisitorServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.InquisitorServantHealth.get())
-                .add(Attributes.ARMOR, GINServantConfig.InquisitorServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, GINServantConfig.InquisitorServantAttackDamage.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.InquisitorServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.33D)
+                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.InquisitorServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.InquisitorServantArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), GINServantConfig.InquisitorServantAttackDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.InquisitorServantFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.InquisitorServantMovementSpeed.get());
+        this.shieldBlockLimit = GINServantConfig.InquisitorShieldBlockLimit.get();
+        this.stunTick = GINServantConfig.InquisitorStunDuration.get();
     }
 
     @Override
@@ -227,6 +231,9 @@ public class InquisitorServant extends AbstractIllagerServant {
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(nbt);
         this.setStunnedState(nbt.getBoolean("Stunned"));
         this.setFinalRoarState(nbt.getBoolean("FinalRoar"));
@@ -279,6 +286,10 @@ public class InquisitorServant extends AbstractIllagerServant {
                                         MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
                                         @Nullable CompoundTag entityNbt) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
         this.populateDefaultEquipmentSlots(world.getRandom(), difficulty);
         this.populateDefaultEquipmentEnchantments(world.getRandom(), difficulty);
