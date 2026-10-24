@@ -93,17 +93,19 @@ public class ProvokerServant extends SpellcasterIllagerServant implements Ranged
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.ProvokerServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.ProvokerServantHealth.get())
-                .add(Attributes.ARMOR, GINServantConfig.ProvokerServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, GINServantConfig.ProvokerServantAttackDamage.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.ProvokerServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35D)
+                .add(Attributes.MAX_HEALTH, 24.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.ATTACK_DAMAGE, 6.0D)
+                .add(Attributes.FOLLOW_RANGE, 12.0D);
     }
 
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.ProvokerServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.ProvokerServantArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), GINServantConfig.ProvokerServantAttackDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.ProvokerServantFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.ProvokerServantMovementSpeed.get());
     }
 
     @Override
@@ -298,7 +300,12 @@ public class ProvokerServant extends SpellcasterIllagerServant implements Ranged
         this.populateDefaultEquipmentSlots(random, difficulty);
         this.populateDefaultEquipmentEnchantments(random, difficulty);
         this.reassessWeaponGoal();
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
     }
 
     protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
@@ -319,6 +326,9 @@ public class ProvokerServant extends SpellcasterIllagerServant implements Ranged
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(tag);
         this.reassessWeaponGoal();
     }
