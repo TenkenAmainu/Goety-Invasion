@@ -107,11 +107,11 @@ public class SurrenderedSpell extends SummonSpell {
         if (isShifting(caster)) return;
 
         int potency = spellStat.getPotency();
-        int duration = spellStat.getDuration();
+        int duration = 1 + spellStat.getDuration();
 
         if (WandUtil.enchantedFocus(caster)) {
             potency += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);
-            duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) + 1;
+            duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster);
         }
 
         int count = 3;
