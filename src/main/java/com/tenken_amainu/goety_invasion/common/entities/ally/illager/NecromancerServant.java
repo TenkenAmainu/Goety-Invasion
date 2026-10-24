@@ -26,6 +26,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -44,6 +45,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,12 +66,14 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
             SynchedEntityData.defineId(NecromancerServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_HEART_OF_NIGHT =
             SynchedEntityData.defineId(NecromancerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_SCALE_BONUS =
+            SynchedEntityData.defineId(NecromancerServant.class, EntityDataSerializers.FLOAT);
 
     private int conjureSkullCooldown;
     private final List<EntityType<?>> summonList = new ArrayList<>();
 
-    public static int getMaxLevel() {
-        return GINServantConfig.NecromancerMaxLevel.get();
+    public int getMaxLevel() {
+        return this.level().isClientSide ? 10 : GINServantConfig.NecromancerMaxLevel.get();
     }
 
     @Override
@@ -131,17 +135,20 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.NecromancerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.NecromancerServantFollowRange.get())
-                .add(Attributes.ARMOR, GINServantConfig.NecromancerServantArmor.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.NecromancerServantHealth.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.5D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.MAX_HEALTH, 32.0D);
     }
 
     @Override
     public void setConfigurableAttributes() {
+        if (this.level().isClientSide) return;
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.NecromancerServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.NecromancerServantArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.NecromancerServantFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.NecromancerServantMovementSpeed.get());
+        this.entityData.set(DATA_SCALE_BONUS, GINServantConfig.NecromancerScaleBonusPerLevel.get().floatValue());
     }
 
     @Override
@@ -151,18 +158,20 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
         this.entityData.define(DATA_NECRO_LEVEL, 0);
         this.entityData.define(DATA_HAS_SOUL_JAR, false);
         this.entityData.define(DATA_HAS_HEART_OF_NIGHT, false);
+        this.entityData.define(DATA_SCALE_BONUS, 0.05F);
     }
 
     public boolean getShieldedState() { return this.entityData.get(DATA_IS_SHIELDED); }
     public void setShieldedState(boolean shielded) { this.entityData.set(DATA_IS_SHIELDED, shielded); }
 
     public int getNecroLevel() {
-        return Mth.clamp(this.entityData.get(DATA_NECRO_LEVEL), 0, getMaxLevel());
+        return Mth.clamp(this.entityData.get(DATA_NECRO_LEVEL), 0, this.getMaxLevel());
     }
 
     public void setNecroLevel(int level) {
-        int clamped = Mth.clamp(level, 0, getMaxLevel());
+        int clamped = Mth.clamp(level, 0, this.getMaxLevel());
         this.entityData.set(DATA_NECRO_LEVEL, clamped);
+        if (this.level().isClientSide) return;
         AttributeInstance healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
         if (healthAttr != null) {
             double health = GINServantConfig.NecromancerServantHealth.get()
@@ -191,13 +200,13 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        float scale = 1.0F + getNecroLevel() * GINServantConfig.NecromancerScaleBonusPerLevel.get().floatValue();
+        float scale = 1.0F + this.getNecroLevel() * this.entityData.get(DATA_SCALE_BONUS);
         return super.getDimensions(pose).scale(scale);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.getShieldedState()) {
+        if (!this.level().isClientSide && this.getShieldedState()) {
             amount *= GINServantConfig.NecromancerShieldDamageReduction.get().floatValue();
         }
         return super.hurt(source, amount);
@@ -311,7 +320,7 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
             return InteractionResult.SUCCESS;
         }
 
-        if (this.getNecroLevel() < getMaxLevel() && stack.is(GINMod.ILL_NECRO_SOUL_JAR.get())) {
+        if (this.getNecroLevel() < this.getMaxLevel() && stack.is(GINMod.ILL_NECRO_SOUL_JAR.get())) {
             if (!player.getAbilities().instabuild) stack.shrink(1);
             this.setNecroLevel(this.getNecroLevel() + 1);
             this.playSound(SoundEvents.ILLUSIONER_AMBIENT, 1.0F, 1.0F);
@@ -377,6 +386,19 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
     @Override protected SoundEvent getHurtSound(DamageSource source) { return SoundEvents.ILLUSIONER_HURT; }
     @Override public SoundEvent getCelebrateSound() { return SoundEvents.ILLUSIONER_AMBIENT; }
     @Override protected SoundEvent getCastingSoundEvent() { return SoundEvents.EVOKER_CAST_SPELL; }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
+                                        @Nullable CompoundTag entityNbt) {
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setNecroLevel(this.getNecroLevel());
+        }
+        return data;
+    }
 
     class NecromancerCastingSpellGoal extends SpellcasterCastingSpellGoal {
         @Override
@@ -502,11 +524,14 @@ public class NecromancerServant extends SpellcasterIllagerServant implements Pow
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHasIllSoulJar(compound.getBoolean("HasIllSoulJar"));
+            this.setHasHeartOfNight(compound.getBoolean("HasHeartOfNight"));
+            this.setNecroLevel(compound.getInt("NecroLevel"));
+        }
         super.readAdditionalSaveData(compound);
         this.conjureSkullCooldown = compound.getInt("ConjureSkullCooldown");
-        this.setHasIllSoulJar(compound.getBoolean("HasIllSoulJar"));
-        this.setHasHeartOfNight(compound.getBoolean("HasHeartOfNight"));
-        this.setNecroLevel(compound.getInt("NecroLevel"));
 
         this.summonList.clear();
         if (compound.contains("SummonList", Tag.TAG_LIST)) {
