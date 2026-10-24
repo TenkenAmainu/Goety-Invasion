@@ -24,6 +24,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -50,6 +51,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -128,12 +130,12 @@ public class BoundInvoker extends AbstractBoundIllager implements PowerableMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.BoundInvokerMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, GINServantConfig.BoundInvokerFlyingSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.BoundInvokerFollowRange.get())
-                .add(Attributes.ARMOR, GINServantConfig.BoundInvokerArmor.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.BoundInvokerHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, GINServantConfig.BoundInvokerAttackDamage.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.36D)
+                .add(Attributes.FLYING_SPEED, 0.15D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.MAX_HEALTH, 250.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     public void setConfigurableAttributes() {
@@ -141,6 +143,21 @@ public class BoundInvoker extends AbstractBoundIllager implements PowerableMob {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.BoundInvokerArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.BoundInvokerFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), GINServantConfig.BoundInvokerAttackDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.BoundInvokerMovementSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FLYING_SPEED), GINServantConfig.BoundInvokerFlyingSpeed.get());
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
+                                        @Nullable CompoundTag entityNbt) {
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
     }
 
     @Override
@@ -152,6 +169,9 @@ public class BoundInvoker extends AbstractBoundIllager implements PowerableMob {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(tag);
         this.setShielded(tag.getBoolean("IsShielded"));
     }
