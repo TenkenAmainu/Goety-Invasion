@@ -289,9 +289,9 @@ public class GINMod {
         MinecraftForge.EVENT_BUS.register(this);
 
         ModLoadingContext.get().registerConfig(
-                ModConfig.Type.COMMON, GINSpellConfig.SPEC, "goety_invasion-spells.toml");
+                ModConfig.Type.SERVER, GINSpellConfig.SPEC, "goety_invasion-spells.toml");
         ModLoadingContext.get().registerConfig(
-                ModConfig.Type.COMMON, GINServantConfig.SPEC, "goety_invasion-servants.toml");
+                ModConfig.Type.SERVER, GINServantConfig.SPEC, "goety_invasion-servants.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
