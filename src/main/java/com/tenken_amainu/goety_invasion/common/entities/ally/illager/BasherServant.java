@@ -3,7 +3,6 @@ package com.tenken_amainu.goety_invasion.common.entities.ally.illager;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.google.common.collect.Maps;
 import com.tenken_amainu.goety_invasion.config.GINServantConfig;
 import fuzs.illagerinvasion.init.ModRegistry;
 import net.minecraft.core.BlockPos;
@@ -88,17 +87,19 @@ public class BasherServant extends AbstractIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.BasherServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.BasherServantHealth.get())
-                .add(Attributes.ARMOR, GINServantConfig.BasherServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, GINServantConfig.BasherServantAttackDamage.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.BasherServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.31D)
+                .add(Attributes.MAX_HEALTH, 32.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.ATTACK_DAMAGE, 4.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.BasherServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.BasherServantArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), GINServantConfig.BasherServantAttackDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.BasherServantFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.BasherServantMovementSpeed.get());
     }
 
     public void reassessWeaponGoal() {
@@ -128,6 +129,9 @@ public class BasherServant extends AbstractIllagerServant {
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(nbt);
         this.setStunTicks(nbt.getInt(TAG_STUN_TICKS));
         this.blockedCount = nbt.getInt("BlockedCount");
@@ -175,7 +179,7 @@ public class BasherServant extends AbstractIllagerServant {
                         this.getX(), this.getY() + 1.5, this.getZ(), 30,
                         0.3, 0.2, 0.3, 0.003);
             }
-            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_AXE));
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_AXE));
             this.blockedCount = 0;
             return super.hurt(source, amount);
         }
@@ -213,6 +217,10 @@ public class BasherServant extends AbstractIllagerServant {
                                         MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
                                         @Nullable CompoundTag entityNbt) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
         this.populateDefaultEquipmentSlots(world.getRandom(), difficulty);
         this.populateDefaultEquipmentEnchantments(world.getRandom(), difficulty);
@@ -230,7 +238,7 @@ public class BasherServant extends AbstractIllagerServant {
         if (random.nextInt(300) != 0) return;
         ItemStack stack = this.getMainHandItem();
         if (!stack.is(Items.SHIELD)) return;
-        Map<Enchantment, Integer> map = Maps.newHashMap();
+        Map<Enchantment, Integer> map = com.google.common.collect.Maps.newHashMap();
         map.put(Enchantments.UNBREAKING, 1);
         EnchantmentHelper.setEnchantments(map, stack);
         this.setItemSlot(EquipmentSlot.MAINHAND, stack);
