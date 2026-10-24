@@ -197,12 +197,32 @@ public class AllySurrendered extends Minion implements RangedAttackMob {
     }
 
     private void applyEquipmentForPotency(int potencyLevel) {
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0f);
+
+        if (potencyLevel <= 0) {
+            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+            this.setDropChance(EquipmentSlot.HEAD, 0.0f);
+            this.setDropChance(EquipmentSlot.CHEST, 0.0f);
+            this.setDropChance(EquipmentSlot.LEGS, 0.0f);
+            this.setDropChance(EquipmentSlot.FEET, 0.0f);
+            return;
+        }
+
+        ItemStack currentHand = this.getMainHandItem();
+        int currentSharpness = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, currentHand);
+        int baseSharpness = potencyLevel >= 3
+                ? Math.min(potencyLevel - 2, Enchantments.SHARPNESS.getMaxLevel())
+                : 0;
+        int finalSharpness = Math.max(currentSharpness, baseSharpness);
+
         ItemStack weapon = new ItemStack(potencyLevel >= 2 ? Items.IRON_AXE : Items.IRON_SWORD);
-        if (potencyLevel >= 3) {
-            weapon.enchant(Enchantments.SHARPNESS, Math.min(potencyLevel - 2, Enchantments.SHARPNESS.getMaxLevel()));
+        if (finalSharpness > 0) {
+            weapon.enchant(Enchantments.SHARPNESS, finalSharpness);
         }
         this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
-        this.setDropChance(EquipmentSlot.MAINHAND, 0.0f);
 
         ItemStack helmet = ItemStack.EMPTY;
         if (potencyLevel >= 1) {
