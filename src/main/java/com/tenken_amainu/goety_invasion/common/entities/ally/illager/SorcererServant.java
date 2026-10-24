@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -37,10 +39,34 @@ public class SorcererServant extends SpellcasterIllagerServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.SorcererServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.SorcererServantFollowRange.get())
-                .add(Attributes.ARMOR, GINServantConfig.SorcererServantArmor.get())
-                .add(Attributes.MAX_HEALTH, GINServantConfig.SorcererServantHealth.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.38D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.MAX_HEALTH, 32.0D);
+    }
+
+    public void setConfigurableAttributes() {
+        MobUtil_setBase(Attributes.MAX_HEALTH, GINServantConfig.SorcererServantHealth.get());
+        MobUtil_setBase(Attributes.ARMOR, GINServantConfig.SorcererServantArmor.get());
+        MobUtil_setBase(Attributes.FOLLOW_RANGE, GINServantConfig.SorcererServantFollowRange.get());
+        MobUtil_setBase(Attributes.MOVEMENT_SPEED, GINServantConfig.SorcererServantMovementSpeed.get());
+    }
+
+    private void MobUtil_setBase(net.minecraft.world.entity.ai.attributes.Attribute attribute, double value) {
+        com.Polarice3.Goety.utils.MobUtil.setBaseAttributes(this.getAttribute(attribute), value);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
+                                        @Nullable CompoundTag entityNbt) {
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
     }
 
     @Override
@@ -102,6 +128,9 @@ public class SorcererServant extends SpellcasterIllagerServant {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(tag);
         this.castTeleportCooldown = tag.getInt("CastTeleportCooldown");
         this.conjureFlamesCooldown = tag.getInt("ConjureFlamesCooldown");
