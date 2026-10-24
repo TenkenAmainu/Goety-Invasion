@@ -40,7 +40,9 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -91,16 +93,33 @@ public class AlchemistServant extends AbstractIllagerServant implements RangedAt
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, GINServantConfig.AlchemistServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, GINServantConfig.AlchemistServantFollowRange.get())
-                .add(Attributes.ARMOR, GINServantConfig.AlchemistServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, GINServantConfig.AlchemistServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, 24.0D)
+                .add(Attributes.FOLLOW_RANGE, 12.0D)
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.38D);
     }
 
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), GINServantConfig.AlchemistServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), GINServantConfig.AlchemistServantArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), GINServantConfig.AlchemistServantFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), GINServantConfig.AlchemistServantMovementSpeed.get());
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
+                                        @Nullable CompoundTag entityNbt) {
+        SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        if (this.getMainHandItem().isEmpty()) {
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+        }
+        return data;
     }
 
     @Override
@@ -218,6 +237,9 @@ public class AlchemistServant extends AbstractIllagerServant implements RangedAt
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
+        if (!this.level().isClientSide) {
+            this.setConfigurableAttributes();
+        }
         super.readAdditionalSaveData(tag);
         this.potionCooldown = tag.getInt("PotionCooldown");
         if (tag.contains("SavedBow")) {
